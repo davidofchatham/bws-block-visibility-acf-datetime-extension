@@ -1,0 +1,17 @@
+{
+  "name": "bws-acf-date-time-control",
+  "version": "1.0.0",
+  "description": "ACF Date/Time Control for Block Visibility",
+  "author": "Bridge Web Solutions",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "wp-scripts build assets/js/editor-control.js --output-path=build",
+    "start": "wp-scripts start assets/js/editor-control.js --output-path=build"
+  },
+  "dependencies": {
+    "react-select": "^5.8.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^26.0.0"
+  }
+}
