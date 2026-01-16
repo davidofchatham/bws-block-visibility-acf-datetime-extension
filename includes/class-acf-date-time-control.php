@@ -2,7 +2,7 @@
 /**
  * Main control class.
  *
- * @package bws-acf-datetime-control
+ * @package bws-block-visibility-acf-datetime-extension
  * @since 1.0.0
  * @license GPL-2.0-or-later
  */
@@ -65,7 +65,7 @@ class BWS_ACF_DateTime_Control {
 		$asset_data = include $asset_file;
 
 		wp_enqueue_script(
-			'bws-acf-datetime-control-editor',
+			'bws-block-visibility-acf-datetime-extension-editor',
 			BWS_ACF_DATETIME_URL . 'build/editor-control.js',
 			$asset_data['dependencies'],
 			$asset_data['version'],
@@ -74,7 +74,7 @@ class BWS_ACF_DateTime_Control {
 
 		// Pass configuration to JavaScript using wp_localize_script.
 		wp_localize_script(
-			'bws-acf-datetime-control-editor',
+			'bws-block-visibility-acf-datetime-extension-editor',
 			'bwsAcfDateTimeConfig',
 			array(
 				'controlSlug'      => 'acfDateTime',
@@ -93,19 +93,19 @@ class BWS_ACF_DateTime_Control {
 		return array(
 			array(
 				'value' => 'before',
-				'label' => __( 'Before', 'bws-acf-datetime-control' ),
+				'label' => __( 'Before', 'bws-block-visibility-acf-datetime-extension' ),
 			),
 			array(
 				'value' => 'beforeOrOn',
-				'label' => __( 'On or before', 'bws-acf-datetime-control' ),
+				'label' => __( 'On or before', 'bws-block-visibility-acf-datetime-extension' ),
 			),
 			array(
 				'value' => 'onOrAfter',
-				'label' => __( 'On or after', 'bws-acf-datetime-control' ),
+				'label' => __( 'On or after', 'bws-block-visibility-acf-datetime-extension' ),
 			),
 			array(
 				'value' => 'after',
-				'label' => __( 'After', 'bws-acf-datetime-control' ),
+				'label' => __( 'After', 'bws-block-visibility-acf-datetime-extension' ),
 			),
 		);
 	}

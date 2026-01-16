@@ -6,7 +6,7 @@
  *
  * @see block-visibility/includes/frontend/visibility-tests/acf.php
  *
- * @package bws-acf-datetime-control
+ * @package bws-block-visibility-acf-datetime-extension
  * @since 1.0.0
  * @license GPL-2.0-or-later
  */

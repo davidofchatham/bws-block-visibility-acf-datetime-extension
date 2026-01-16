@@ -5,7 +5,7 @@
  *
  * @see block-visibility/includes/rest-api/controllers/class-block-visibility-rest-variables-controller.php
  *
- * @package bws-acf-datetime-control
+ * @package bws-block-visibility-acf-datetime-extension
  * @since 1.0.0
  * @license GPL-2.0-or-later
  */
@@ -145,7 +145,7 @@ import ReactSelect from 'react-select';
 						onChange: function( selectedOption ) {
 							onChange( selectedOption ? selectedOption.value : '' );
 						},
-						placeholder: placeholder || __( 'Select…', 'bws-acf-datetime-control' ),
+						placeholder: placeholder || __( 'Select…', 'bws-block-visibility-acf-datetime-extension' ),
 						isClearable: false,
 						styles: customStyles,
 						components: customComponents
@@ -173,7 +173,7 @@ import ReactSelect from 'react-select';
 		'bws/acf-datetime-control',
 		function( controls ) {
 			controls.push( {
-				label: __( 'ACF Date/Time', 'bws-acf-datetime-control' ),
+				label: __( 'ACF Date/Time', 'bws-block-visibility-acf-datetime-extension' ),
 				attributeSlug: 'acfDateTime',
 				settingSlug: 'acf_date_time',
 			} );
@@ -295,12 +295,12 @@ import ReactSelect from 'react-select';
 
 		return el( 'div', { className: 'controls-panel-item acf-datetime-control' },
 			el( 'h3', { className: 'controls-panel-item__header' },
-				el( 'span', null, __( 'ACF Date/Time', 'bws-acf-datetime-control' ) ),
+				el( 'span', null, __( 'ACF Date/Time', 'bws-block-visibility-acf-datetime-extension' ) ),
 				el( 'div', { className: 'controls-panel-item__header-toolbar' },
 					el( Button, {
 						icon: plusIcon,
 						onClick: addRuleSet,
-						label: __( 'Add rule set', 'bws-acf-datetime-control' ),
+						label: __( 'Add rule set', 'bws-block-visibility-acf-datetime-extension' ),
 						size: 'small'
 					} )
 				)
@@ -308,8 +308,8 @@ import ReactSelect from 'react-select';
 			el( 'div', { className: 'controls-panel-item__description' },
 				sprintf(
 					// Translators: Whether the block is hidden or visible.
-					__( '%s the block if any rule set applies. Rules associated with users will fail if the current user is not logged in.', 'bws-acf-datetime-control' ),
-					hideOnRuleSets ? __( 'Hide', 'bws-acf-datetime-control' ) : __( 'Show', 'bws-acf-datetime-control' )
+					__( '%s the block if any rule set applies. Rules associated with users will fail if the current user is not logged in.', 'bws-block-visibility-acf-datetime-extension' ),
+					hideOnRuleSets ? __( 'Hide', 'bws-block-visibility-acf-datetime-extension' ) : __( 'Show', 'bws-block-visibility-acf-datetime-extension' )
 				)
 			),
 			el( 'div', { className: 'controls-panel-item__control-fields' },
@@ -329,15 +329,15 @@ import ReactSelect from 'react-select';
 									const selectedField = hasField ? findFieldByKey( flatDateFields, rule.field ) : null;
 									const fieldTypeHelp = selectedField
 										? sprintf(
-											__( 'Field type: %s', 'bws-acf-datetime-control' ),
+											__( 'Field type: %s', 'bws-block-visibility-acf-datetime-extension' ),
 											getFieldTypeLabel( selectedField.type )
 										)
 										: null;
 
 									// Generate rule label
 									const ruleLabel = ruleSetIndex === 0 && ruleIndex === 0
-										? ( hideOnRuleSets ? __( 'Hide', 'bws-acf-datetime-control' ) : __( 'Show', 'bws-acf-datetime-control' ) ) + ' ' + __( 'the block if current date and time is', 'bws-acf-datetime-control' )
-										: __( 'And if current date and time is', 'bws-acf-datetime-control' );
+										? ( hideOnRuleSets ? __( 'Hide', 'bws-block-visibility-acf-datetime-extension' ) : __( 'Show', 'bws-block-visibility-acf-datetime-extension' ) ) + ' ' + __( 'the block if current date and time is', 'bws-block-visibility-acf-datetime-extension' )
+										: __( 'And if current date and time is', 'bws-block-visibility-acf-datetime-extension' );
 
 									return el( 'div', {
 											key: ruleIndex,
@@ -346,7 +346,7 @@ import ReactSelect from 'react-select';
 										el( 'div', { className: 'rule__header' },
 											el( 'span', null, ruleLabel ),
 											( ruleSet.rules || [] ).length > 1 && el( Button, {
-												label: __( 'Delete Rule', 'bws-acf-datetime-control' ),
+												label: __( 'Delete Rule', 'bws-block-visibility-acf-datetime-extension' ),
 												icon: trash,
 												onClick: function() {
 													removeRule( ruleSetIndex, ruleIndex );
@@ -356,37 +356,37 @@ import ReactSelect from 'react-select';
 										el( 'div', { className: 'rule__fields' },
 											el( 'div', { className: 'fields-container' },
 												renderSelectField( {
-													label: __( 'Comparison operator', 'bws-acf-datetime-control' ),
+													label: __( 'Comparison operator', 'bws-block-visibility-acf-datetime-extension' ),
 													value: rule.operator || '',
 													options: window.bwsAcfDateTimeConfig?.operators || [],
 													onChange: function( operator ) {
 														updateRule( ruleSetIndex, ruleIndex, assign( {}, rule, { operator: operator } ) );
 													},
-													placeholder: __( 'Select…', 'bws-acf-datetime-control' ),
+													placeholder: __( 'Select…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_operator',
 													className: 'field__operator has-visually-hidden-label'
 												} ),
 												hasOperator && renderSelectField( {
-													label: __( 'Date/datetime field', 'bws-acf-datetime-control' ),
+													label: __( 'Date/datetime field', 'bws-block-visibility-acf-datetime-extension' ),
 													value: rule.field || '',
 													options: groupedFieldOptions,
 													onChange: function( field ) {
 														updateRule( ruleSetIndex, ruleIndex, assign( {}, rule, { field: field } ) );
 													},
-													placeholder: __( 'Select Field…', 'bws-acf-datetime-control' ),
+													placeholder: __( 'Select Field…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_field',
 													className: 'field__ruleField',
 													help: fieldTypeHelp,
 													hasGroupedOptions: true
 												} ),
 												hasOperator && renderSelectField( {
-													label: __( 'This field is associated with', 'bws-acf-datetime-control' ),
+													label: __( 'This field is associated with', 'bws-block-visibility-acf-datetime-extension' ),
 													value: rule.subField || 'post',
 													options: getSubFieldOptions(),
 													onChange: function( subField ) {
 														updateRule( ruleSetIndex, ruleIndex, assign( {}, rule, { subField: subField } ) );
 													},
-													placeholder: __( 'Select Context…', 'bws-acf-datetime-control' ),
+													placeholder: __( 'Select Context…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_subField',
 													className: 'field__subField'
 												} )
@@ -401,7 +401,7 @@ import ReactSelect from 'react-select';
 									onClick: function() {
 										addRule( ruleSetIndex );
 									}
-								}, __( 'Add rule', 'bws-acf-datetime-control' ) )
+								}, __( 'Add rule', 'bws-block-visibility-acf-datetime-extension' ) )
 							)
 						);
 
@@ -411,13 +411,13 @@ import ReactSelect from 'react-select';
 							},
 							el( 'div', { className: 'rule-set__header section-header' },
 								el( 'div', { className: 'section-header__title' },
-									__( 'Rule Set', 'bws-acf-datetime-control' ) +
+									__( 'Rule Set', 'bws-block-visibility-acf-datetime-extension' ) +
 									( ruleSets.length > 1 ? ' ' + ( ruleSetIndex + 1 ) : '' )
 								),
 								el( 'div', { className: 'section-header__toolbar' },
 									el( DropdownMenu, {
 										icon: moreVerticalIcon,
-										label: __( 'Options', 'bws-acf-datetime-control' ),
+										label: __( 'Options', 'bws-block-visibility-acf-datetime-extension' ),
 										popoverProps: {
 											focusOnMount: 'container',
 											placement: 'left-start'
@@ -426,15 +426,15 @@ import ReactSelect from 'react-select';
 										function( props ) {
 											const onClose = props.onClose;
 											return el( Fragment, {},
-												el( MenuGroup, { label: __( 'Tools', 'bws-acf-datetime-control' ) },
+												el( MenuGroup, { label: __( 'Tools', 'bws-block-visibility-acf-datetime-extension' ) },
 													el( MenuItem, {
 														onClick: function() {
 															updateRuleSet( ruleSetIndex, assign( {}, ruleSet, { enable: ! ( ruleSet.enable !== false ) } ) );
 														}
 													},
 														ruleSet.enable !== false
-															? __( 'Disable', 'bws-acf-datetime-control' )
-															: __( 'Enable', 'bws-acf-datetime-control' )
+															? __( 'Disable', 'bws-block-visibility-acf-datetime-extension' )
+															: __( 'Enable', 'bws-block-visibility-acf-datetime-extension' )
 													)
 												),
 												ruleSets.length > 1 && el( MenuGroup, {},
@@ -443,7 +443,7 @@ import ReactSelect from 'react-select';
 															removeRuleSet( ruleSetIndex );
 															onClose();
 														}
-													}, __( 'Remove rule set', 'bws-acf-datetime-control' ) )
+													}, __( 'Remove rule set', 'bws-block-visibility-acf-datetime-extension' ) )
 												)
 											);
 										}
@@ -456,7 +456,7 @@ import ReactSelect from 'react-select';
 				),
 				el( 'div', { className: 'control-fields-item__hide-when' },
 					el( ToggleControl, {
-						label: __( 'Hide when rules apply', 'bws-acf-datetime-control' ),
+						label: __( 'Hide when rules apply', 'bws-block-visibility-acf-datetime-extension' ),
 						checked: hideOnRuleSets,
 						onChange: updateHideOnRuleSets
 					} )
@@ -493,20 +493,20 @@ import ReactSelect from 'react-select';
 	 */
 	function getSubFieldOptions() {
 		const options = [
-			{ label: __( 'The current post', 'bws-acf-datetime-control' ), value: 'post' }
+			{ label: __( 'The current post', 'bws-block-visibility-acf-datetime-extension' ), value: 'post' }
 		];
 
 		// Add portal option as second option if portal system is available.
 		if ( window.bwsAcfDateTimeConfig?.hasPortalSystem ) {
 			options.push(
-				{ label: __( 'The current portal', 'bws-acf-datetime-control' ), value: 'portal' }
+				{ label: __( 'The current portal', 'bws-block-visibility-acf-datetime-extension' ), value: 'portal' }
 			);
 		}
 
 		// Add remaining options.
 		options.push(
-			{ label: __( 'The current user', 'bws-acf-datetime-control' ), value: 'user' },
-			{ label: __( 'An options page', 'bws-acf-datetime-control' ), value: 'option' }
+			{ label: __( 'The current user', 'bws-block-visibility-acf-datetime-extension' ), value: 'user' },
+			{ label: __( 'An options page', 'bws-block-visibility-acf-datetime-extension' ), value: 'option' }
 		);
 
 		return options;
@@ -578,9 +578,9 @@ import ReactSelect from 'react-select';
 	 */
 	function getFieldTypeLabel( fieldType ) {
 		if ( fieldType === 'date_picker' ) {
-			return __( 'Date Picker', 'bws-acf-datetime-control' );
+			return __( 'Date Picker', 'bws-block-visibility-acf-datetime-extension' );
 		} else if ( fieldType === 'date_time_picker' ) {
-			return __( 'Date Time Picker', 'bws-acf-datetime-control' );
+			return __( 'Date Time Picker', 'bws-block-visibility-acf-datetime-extension' );
 		}
 		return fieldType;
 	}

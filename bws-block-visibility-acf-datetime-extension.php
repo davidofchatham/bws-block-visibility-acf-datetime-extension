@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name: Block Visibility ACF Date-Time Extension by BWS 
+ * Plugin URI: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension
  * Description: Adds a control for conditions based on ACF date/datetime fields to Block Visibility
  * Version: 1.0.0
  * Requires PHP: 7.4
@@ -9,9 +10,9 @@
  * Author URI: https://bridgewebsolutions.com
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: bws-acf-datetime-control
+ * Text Domain: bws-block-visibility-acf-datetime-extension
  *
- * @package bws-acf-datetime-control
+ * @package bws-block-visibility-acf-datetime-extension
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -34,7 +35,7 @@ if ( ! function_exists( 'acf' ) ) {
  */
 function bws_acf_datetime_control_bv_version_notice() {
 	echo '<div class="error"><p>';
-	echo esc_html__( 'Block Visibility ACF Date-Time Extension requires Block Visibility 3.0.0 or higher.', 'bws-acf-datetime-control' );
+	echo esc_html__( 'Block Visibility ACF Date-Time Extension requires Block Visibility 3.0.0 or higher.', 'bws-block-visibility-acf-datetime-extension' );
 	echo '</p></div>';
 }
 
@@ -43,7 +44,7 @@ function bws_acf_datetime_control_bv_version_notice() {
  */
 function bws_acf_datetime_control_acf_notice() {
 	echo '<div class="error"><p>';
-	echo esc_html__( 'Block Visibility ACF Date-Time Extension requires Advanced Custom Fields to be active.', 'bws-acf-datetime-control' );
+	echo esc_html__( 'Block Visibility ACF Date-Time Extension requires Advanced Custom Fields to be active.', 'bws-block-visibility-acf-datetime-extension' );
 	echo '</p></div>';
 }
 
