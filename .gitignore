@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
 
-# Build files
-build/
+# Distribution files
+dist/
 
 # OS files
 .DS_Store
@@ -17,10 +17,6 @@ Thumbs.db
 # Log files
 *.log
 npm-debug.log*
-
-# Package manager lock files (optional)
-package-lock.json
-yarn.lock
 
 # Claude working files
 .claude/

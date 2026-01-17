@@ -6,7 +6,8 @@
   "license": "GPL-2.0-or-later",
   "scripts": {
     "build": "wp-scripts build assets/js/editor-control.js --output-path=build",
-    "start": "wp-scripts start assets/js/editor-control.js --output-path=build"
+    "start": "wp-scripts start assets/js/editor-control.js --output-path=build",
+    "package": "npm run build && node package-plugin.js"
   },
   "dependencies": {
     "react-select": "^5.8.0"
