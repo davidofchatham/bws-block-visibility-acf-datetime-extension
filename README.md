@@ -222,7 +222,7 @@ For issues, questions, or contributions, please use the [GitHub issue tracker](h
 
 ## Changelog
 
-### 1.0.0
+### 0.7.0
 - Initial release
 - Support for ACF Date Picker and Date Time Picker fields
 - Four comparison operators: before, beforeOrOn, after, onOrAfter
