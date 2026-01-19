@@ -3,7 +3,7 @@
  * Plugin Name: Block Visibility ACF Date-Time Extension by BWS 
  * Plugin URI: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension
  * Description: Adds a control for conditions based on ACF date/datetime fields to Block Visibility
- * Version: 1.0.0
+ * Version: 0.7.0
  * Requires PHP: 7.4
  * Requires at least: 6.5
  * Author: Bridge Web Solutions
@@ -49,7 +49,7 @@ function bws_acf_datetime_control_acf_notice() {
 }
 
 // Define plugin constants.
-define( 'BWS_ACF_DATETIME_VERSION', '1.0.0' );
+define( 'BWS_ACF_DATETIME_VERSION', '0.7.0' );
 define( 'BWS_ACF_DATETIME_FILE', __FILE__ );
 define( 'BWS_ACF_DATETIME_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BWS_ACF_DATETIME_URL', plugin_dir_url( __FILE__ ) );
