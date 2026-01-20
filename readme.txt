@@ -101,8 +101,14 @@ Yes! You can create multiple rule sets with AND/OR logic, just like other Block 
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial release
+= 0.8.0 =
+* Added: Duplicate button in rule set hamburger menu
+* Improved: Hamburger menu now matches Block Visibility patterns exactly
+* Added: Control automatically available in Block Visibility Default Visibility Controls setting
+* Improved: Control can be enabled/disabled globally via Block Visibility settings
+
+= 0.7.0 =
+* Initial feature-complete beta release
 * Support for ACF Date Picker and Date Time Picker fields
 * Four comparison operators: before, beforeOrOn, after, onOrAfter
 * Support for post fields, user fields, and options page fields
@@ -112,8 +118,11 @@ Yes! You can create multiple rule sets with AND/OR logic, just like other Block 
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release of Block Visibility ACF Date-Time Extension.
+= 0.8.0 =
+Adds Duplicate button to rule sets and ensures control appears in Block Visibility's global settings.
+
+= 0.7.0 =
+Initial feature-complete beta release.
 
 == Development ==
 
