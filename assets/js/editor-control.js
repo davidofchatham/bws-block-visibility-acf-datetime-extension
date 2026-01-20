@@ -262,6 +262,22 @@ import ReactSelect from 'react-select';
 		};
 
 		/**
+		 * Duplicate rule set.
+		 */
+		const duplicateRuleSet = function( index ) {
+			const originalRuleSet = ruleSets[ index ];
+			const duplicatedRuleSet = assign( {}, originalRuleSet, {
+				enable: true,
+				rules: ( originalRuleSet.rules || [] ).map( function( rule ) {
+					return assign( {}, rule );
+				} )
+			} );
+			const newRuleSets = ruleSets.slice();
+			newRuleSets.splice( index + 1, 0, duplicatedRuleSet );
+			updateRuleSets( newRuleSets );
+		};
+
+		/**
 		 * Update individual rule.
 		 */
 		const updateRule = function( ruleSetIndex, ruleIndex, newRule ) {
@@ -435,7 +451,13 @@ import ReactSelect from 'react-select';
 														ruleSet.enable !== false
 															? __( 'Disable', 'bws-block-visibility-acf-datetime-extension' )
 															: __( 'Enable', 'bws-block-visibility-acf-datetime-extension' )
-													)
+													),
+													el( MenuItem, {
+														onClick: function() {
+															duplicateRuleSet( ruleSetIndex );
+															onClose();
+														}
+													}, __( 'Duplicate', 'bws-block-visibility-acf-datetime-extension' ) )
 												),
 												ruleSets.length > 1 && el( MenuGroup, {},
 													el( MenuItem, {
