@@ -230,8 +230,6 @@ For issues, questions, or contributions, please use the [GitHub issue tracker](h
 - Added: "Clear rule set" option for single rule sets (vs "Remove rule set" for multiple)
 - Fixed: Disabled rule sets now properly ignored in visibility evaluation
 - Improved: Delete Rule button uses Block Visibility-style close icon (X)
-- Added: Control automatically available in Block Visibility Default Visibility Controls setting
-- Improved: Control can be enabled/disabled globally via Block Visibility settings
 
 ### 0.7.0
 - Initial release
