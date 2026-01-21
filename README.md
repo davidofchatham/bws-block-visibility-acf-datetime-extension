@@ -10,9 +10,11 @@ Extends [Block Visibility](https://www.blockvisibilitywp.com/) with controls for
 - **ACF Field Support**: Works with both ACF Date Picker and Date Time Picker fields
 - **Multiple Field Contexts**: Supports post fields, user fields, and options page fields
 - **Rule Sets**: Create complex visibility rules with AND/OR logic
+- **Rule Set Management**: Enable/disable, duplicate, and remove rule sets via hamburger menu
 - **Seamless Integration**: Matches Block Visibility's native UI and workflow
 - **Grouped Field Listings**: ACF fields organized by Field Group for easy selection
 - **Field Type Display**: Shows whether a field is Date Picker or Date Time Picker
+- **Default Visibility Controls**: Available in Block Visibility's global settings
 
 ## Requirements
 
@@ -221,6 +223,15 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 For issues, questions, or contributions, please use the [GitHub issue tracker](https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/issues).
 
 ## Changelog
+
+### 0.8.0
+- Added: Duplicate button in rule set hamburger menu
+- Improved: Hamburger menu now matches Block Visibility patterns exactly
+- Added: "Clear rule set" option for single rule sets (vs "Remove rule set" for multiple)
+- Fixed: Disabled rule sets now properly ignored in visibility evaluation
+- Improved: Delete Rule button uses Block Visibility-style close icon (X)
+- Added: Control automatically available in Block Visibility Default Visibility Controls setting
+- Improved: Control can be enabled/disabled globally via Block Visibility settings
 
 ### 0.7.0
 - Initial release
