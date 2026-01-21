@@ -104,6 +104,9 @@ Yes! You can create multiple rule sets with AND/OR logic, just like other Block 
 = 0.8.0 =
 * Added: Duplicate button in rule set hamburger menu
 * Improved: Hamburger menu now matches Block Visibility patterns exactly
+* Added: "Clear rule set" option for single rule sets (vs "Remove rule set" for multiple)
+* Fixed: Disabled rule sets now properly ignored in visibility evaluation
+* Improved: Delete Rule button uses Block Visibility-style close icon (X)
 * Added: Control automatically available in Block Visibility Default Visibility Controls setting
 * Improved: Control can be enabled/disabled globally via Block Visibility settings
 

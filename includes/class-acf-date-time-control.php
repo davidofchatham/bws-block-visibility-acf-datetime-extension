@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * ACF Date/Time Control class.
+ * ACF Date/Datetime Control class.
  */
 class BWS_ACF_DateTime_Control {
 

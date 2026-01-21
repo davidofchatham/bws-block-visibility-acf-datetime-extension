@@ -1,5 +1,5 @@
 /**
- * ACF Date/Time Control - Editor Component
+ * ACF Date/Datetime Control - Editor Component
  *
  * ACF fields are fetched via Block Visibility's REST API.
  *
@@ -28,7 +28,6 @@ import ReactSelect from 'react-select';
 	const { createElement: el, Fragment } = wp.element;
 	const { SelectControl, ToggleControl, Button, DropdownMenu, MenuGroup, MenuItem, Fill, Disabled } = wp.components;
 	const { SVG, Path } = wp.primitives;
-	const { trash } = wp.icons || {};
 	const { assign } = lodash;
 
 	// Block Visibility icon definitions
@@ -38,6 +37,10 @@ import ReactSelect from 'react-select';
 
 	const moreVerticalIcon = el( SVG, { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
 		el( Path, { d: 'M13 19h-2v-2h2v2zm0-6h-2v-2h2v2zm0-6h-2V5h2v2z' } )
+	);
+
+	const closeIcon = el( SVG, { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
+		el( Path, { d: 'M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z' } )
 	);
 
 	/**
@@ -173,7 +176,7 @@ import ReactSelect from 'react-select';
 		'bws/acf-datetime-control',
 		function( controls ) {
 			controls.push( {
-				label: __( 'ACF Date/Time', 'bws-block-visibility-acf-datetime-extension' ),
+				label: __( 'ACF Date/Datetime', 'bws-block-visibility-acf-datetime-extension' ),
 				attributeSlug: 'acfDateTime',
 				settingSlug: 'acf_date_time',
 			} );
@@ -182,7 +185,7 @@ import ReactSelect from 'react-select';
 	);
 
 	/**
-	 * ACF Date/Time Control Component.
+	 * ACF Date/Datetime Control Component.
 	 */
 	function AcfDateTimeControl( props ) {
 		const { enabledControls, controlSetAtts, setControlAtts, variables } = props;
@@ -311,7 +314,7 @@ import ReactSelect from 'react-select';
 
 		return el( 'div', { className: 'controls-panel-item acf-datetime-control' },
 			el( 'h3', { className: 'controls-panel-item__header' },
-				el( 'span', null, __( 'ACF Date/Time', 'bws-block-visibility-acf-datetime-extension' ) ),
+				el( 'span', null, __( 'ACF Date/Datetime', 'bws-block-visibility-acf-datetime-extension' ) ),
 				el( 'div', { className: 'controls-panel-item__header-toolbar' },
 					el( Button, {
 						icon: plusIcon,
@@ -363,7 +366,7 @@ import ReactSelect from 'react-select';
 											el( 'span', null, ruleLabel ),
 											( ruleSet.rules || [] ).length > 1 && el( Button, {
 												label: __( 'Delete Rule', 'bws-block-visibility-acf-datetime-extension' ),
-												icon: trash,
+												icon: closeIcon,
 												onClick: function() {
 													removeRule( ruleSetIndex, ruleIndex );
 												}
@@ -459,13 +462,16 @@ import ReactSelect from 'react-select';
 														}
 													}, __( 'Duplicate', 'bws-block-visibility-acf-datetime-extension' ) )
 												),
-												ruleSets.length > 1 && el( MenuGroup, {},
+												el( MenuGroup, {},
 													el( MenuItem, {
 														onClick: function() {
 															removeRuleSet( ruleSetIndex );
 															onClose();
 														}
-													}, __( 'Remove rule set', 'bws-block-visibility-acf-datetime-extension' ) )
+													}, ruleSets.length > 1
+														? __( 'Remove rule set', 'bws-block-visibility-acf-datetime-extension' )
+														: __( 'Clear rule set', 'bws-block-visibility-acf-datetime-extension' )
+													)
 												)
 											);
 										}
@@ -499,7 +505,7 @@ import ReactSelect from 'react-select';
 
 				return el( Fragment, {},
 					el( ControlSetControls, props ),
-					el( Fill, { name: 'ControlSetControls-' + uniqueIndex },
+					el( Fill, { name: 'ControlSetControlsIntegrations-' + uniqueIndex },
 						el( AcfDateTimeControl, props )
 					)
 				);

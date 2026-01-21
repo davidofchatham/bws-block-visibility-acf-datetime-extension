@@ -1,6 +1,6 @@
 <?php
 /**
- * ACF Date/Time visibility test.
+ * ACF Date/Datetime visibility test.
  *
  * Rule set structure adapted from Block Visibility's ACF integration.
  *
@@ -164,6 +164,13 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 	}
 
 	debug_log( 'All rule set results: ' . implode( ', ', $rule_sets_test_results ) );
+
+	// If no rule sets were processed (all disabled or empty), return visible.
+	if ( empty( $rule_sets_test_results ) ) {
+		debug_log( 'Final visibility result: VISIBLE (no enabled rule sets)' );
+		debug_log( '==== BWS ACF DateTime: End ====' );
+		return true;
+	}
 
 	// OR logic between rule sets.
 	if ( ! $hide_on_rule_sets ) {
