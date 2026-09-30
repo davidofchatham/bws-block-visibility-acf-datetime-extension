@@ -4,7 +4,6 @@ The visible index over all non-bug work. This is **not a roadmap**: nothing here
 
 ## Index
 
-- FW-1: v0.9.0 fixes and plugin-update-checker
 - FW-2: v1.0.0 Block Visibility integration
 - FW-3: Custom comparison date
 - FW-4: Relative date comparisons
@@ -33,16 +32,6 @@ Progress may state only what stays true forever once true ("agreed, not started"
 
 ### Releases
 
-#### FW-1 — v0.9.0 fixes and plugin-update-checker
-
-Correctness fixes found in an assessment against Block Visibility 3.8.1 (logged-out user rule, empty-value handling, REST-time test loading, JS dependency extraction), plus vendoring plugin-update-checker so later versions reach live sites automatically.
-
-Detail home: `.scratch/plans/v0.9.0-fixes-and-updater.md`, sliced into tickets under `.scratch/v0.9.0/issues/`
-
-Progress: Agreed and sliced into nine tickets; test harness (ticket 01), logged-out user-rule fix (ticket 02), neutral empty/unparseable values (ticket 03) and REST-time test loading (ticket 04) `@wordpress/*` imports for the editor JS (ticket 05) and version headers with ACF-integration readme note (ticket 06) plugin-update-checker wiring (ticket 07) and the CI release workflow with `build/` untracked (ticket 08) built.
-
-Blocked by: —  •  Interacts with: FW-2
-
 #### FW-2 — v1.0.0 Block Visibility integration
 
 Make the control a first-class BV integration: listed under "Integrations" in the editor menu, "ACF Date & Time" label and icon, a global enable toggle in BV's settings screen, and a tooling upgrade. Release as 1.0.0 if it works cleanly.
@@ -51,7 +40,7 @@ Detail home: `.scratch/plans/v1.0.0-integration.md`
 
 Progress: Agreed, not started.
 
-Blocked by: ship:0.9.0  •  Interacts with: FW-1
+Blocked by: ship:0.9.0  •  Interacts with: FW-1 (closed)
 
 ### Feature ideas
 
@@ -109,6 +98,7 @@ Blocked by: —  •  Interacts with: FW-3
 
 | ID | Item | Outcome | Landed / detail home |
 |---|---|---|---|
+| FW-1 | v0.9.0 fixes and plugin-update-checker | Fixed the logged-out user rule, empty-value handling, REST-time test loading and JS dependency extraction, and added self-update from GitHub releases through plugin-update-checker. | 0.9.0 |
 
 ## Maintenance
 
