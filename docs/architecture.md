@@ -40,7 +40,7 @@ The plugin uses only BV's documented filters; nothing patches BV.
 
 ## Editor control
 
-- Classic WordPress patterns: `wp.element.createElement`, no JSX, `lodash.assign` for merging. Icons are custom SVG elements built from `wp.primitives`, defined at the top of the file.
+- `@wordpress/*` imports (hooks, i18n, element, components, primitives) instead of `wp.*` globals; `wp-scripts` dependency extraction turns them into `wp-*` script handles in `build/editor-control.asset.php`, so WordPress loads them before the control. `createElement` with no JSX, `Object.assign` for merging. Icons are custom SVG elements built from `@wordpress/primitives`, defined at the top of the file.
 - **Field selector:** fields are grouped by ACF Field Group with the group name as the section heading, matching BV's native ACF control. Only date and datetime fields are shown. After selection, the field type appears below the selector ("Field type: Date Picker") using BV's `.control-fields-item__help` styling.
 - **UI implementation flag:** `USE_REACT_SELECT` in `assets/js/editor-control.js` picks the select implementation. `true` uses `react-select` with `.block-visibility__react-select` classes and matches BV exactly (~90KB bundle). `false` uses WordPress `SelectControl` (~5.5KB, standard admin styling). Production ships `true`. Rebuild after changing it.
 

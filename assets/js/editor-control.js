@@ -11,24 +11,18 @@
  */
 
 import ReactSelect from 'react-select';
+import { addFilter } from '@wordpress/hooks';
+import { __, sprintf } from '@wordpress/i18n';
+import { createElement as el, Fragment } from '@wordpress/element';
+import { SelectControl, ToggleControl, Button, DropdownMenu, MenuGroup, MenuItem, Fill, Disabled } from '@wordpress/components';
+import { SVG, Path } from '@wordpress/primitives';
 
 ( function() {
-	if ( typeof wp === 'undefined' || ! wp.hooks || ! wp.element || ! wp.components ) {
-		return;
-	}
-
 	/**
 	 * Feature flag: Set to true to use react-select (Block Visibility style),
 	 * or false to use WordPress SelectControl (fallback).
 	 */
 	const USE_REACT_SELECT = true;
-
-	const { addFilter } = wp.hooks;
-	const { __, sprintf } = wp.i18n;
-	const { createElement: el, Fragment } = wp.element;
-	const { SelectControl, ToggleControl, Button, DropdownMenu, MenuGroup, MenuItem, Fill, Disabled } = wp.components;
-	const { SVG, Path } = wp.primitives;
-	const { assign } = lodash;
 
 	// Block Visibility icon definitions
 	const plusIcon = el( SVG, { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
@@ -113,7 +107,7 @@ import ReactSelect from 'react-select';
 			// Custom styles matching Block Visibility
 			const customStyles = {
 				control: function( base ) {
-					return assign( {}, base, {
+					return Object.assign( {}, base, {
 						minHeight: '40px',
 						borderColor: '#757575'
 					} );
@@ -228,14 +222,14 @@ import ReactSelect from 'react-select';
 		 * Update rule sets.
 		 */
 		const updateRuleSets = function( newRuleSets ) {
-			setControlAtts( 'acfDateTime', assign( {}, acfDateTime, { ruleSets: newRuleSets } ) );
+			setControlAtts( 'acfDateTime', Object.assign( {}, acfDateTime, { ruleSets: newRuleSets } ) );
 		};
 
 		/**
 		 * Update hideOnRuleSets toggle.
 		 */
 		const updateHideOnRuleSets = function( newValue ) {
-			setControlAtts( 'acfDateTime', assign( {}, acfDateTime, { hideOnRuleSets: newValue } ) );
+			setControlAtts( 'acfDateTime', Object.assign( {}, acfDateTime, { hideOnRuleSets: newValue } ) );
 		};
 
 		/**
@@ -269,10 +263,10 @@ import ReactSelect from 'react-select';
 		 */
 		const duplicateRuleSet = function( index ) {
 			const originalRuleSet = ruleSets[ index ];
-			const duplicatedRuleSet = assign( {}, originalRuleSet, {
+			const duplicatedRuleSet = Object.assign( {}, originalRuleSet, {
 				enable: true,
 				rules: ( originalRuleSet.rules || [] ).map( function( rule ) {
-					return assign( {}, rule );
+					return Object.assign( {}, rule );
 				} )
 			} );
 			const newRuleSets = ruleSets.slice();
@@ -284,7 +278,7 @@ import ReactSelect from 'react-select';
 		 * Update individual rule.
 		 */
 		const updateRule = function( ruleSetIndex, ruleIndex, newRule ) {
-			const newRuleSet = assign( {}, ruleSets[ ruleSetIndex ] );
+			const newRuleSet = Object.assign( {}, ruleSets[ ruleSetIndex ] );
 			const newRules = ( newRuleSet.rules || [] ).slice();
 			newRules[ ruleIndex ] = newRule;
 			newRuleSet.rules = newRules;
@@ -295,7 +289,7 @@ import ReactSelect from 'react-select';
 		 * Add new rule.
 		 */
 		const addRule = function( ruleSetIndex ) {
-			const newRuleSet = assign( {}, ruleSets[ ruleSetIndex ] );
+			const newRuleSet = Object.assign( {}, ruleSets[ ruleSetIndex ] );
 			newRuleSet.rules = ( newRuleSet.rules || [] ).concat( [ {} ] );
 			updateRuleSet( ruleSetIndex, newRuleSet );
 		};
@@ -304,7 +298,7 @@ import ReactSelect from 'react-select';
 		 * Remove rule.
 		 */
 		const removeRule = function( ruleSetIndex, ruleIndex ) {
-			const newRuleSet = assign( {}, ruleSets[ ruleSetIndex ] );
+			const newRuleSet = Object.assign( {}, ruleSets[ ruleSetIndex ] );
 			const newRules = ( newRuleSet.rules || [] ).filter( function( _, i ) {
 				return i !== ruleIndex;
 			} );
@@ -379,7 +373,7 @@ import ReactSelect from 'react-select';
 													value: rule.operator || '',
 													options: window.bwsAcfDateTimeConfig?.operators || [],
 													onChange: function( operator ) {
-														updateRule( ruleSetIndex, ruleIndex, assign( {}, rule, { operator: operator } ) );
+														updateRule( ruleSetIndex, ruleIndex, Object.assign( {}, rule, { operator: operator } ) );
 													},
 													placeholder: __( 'Select…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_operator',
@@ -390,7 +384,7 @@ import ReactSelect from 'react-select';
 													value: rule.field || '',
 													options: groupedFieldOptions,
 													onChange: function( field ) {
-														updateRule( ruleSetIndex, ruleIndex, assign( {}, rule, { field: field } ) );
+														updateRule( ruleSetIndex, ruleIndex, Object.assign( {}, rule, { field: field } ) );
 													},
 													placeholder: __( 'Select Field…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_field',
@@ -403,7 +397,7 @@ import ReactSelect from 'react-select';
 													value: rule.subField || 'post',
 													options: getSubFieldOptions(),
 													onChange: function( subField ) {
-														updateRule( ruleSetIndex, ruleIndex, assign( {}, rule, { subField: subField } ) );
+														updateRule( ruleSetIndex, ruleIndex, Object.assign( {}, rule, { subField: subField } ) );
 													},
 													placeholder: __( 'Select Context…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_subField',
@@ -448,7 +442,7 @@ import ReactSelect from 'react-select';
 												el( MenuGroup, { label: __( 'Tools', 'bws-block-visibility-acf-datetime-extension' ) },
 													el( MenuItem, {
 														onClick: function() {
-															updateRuleSet( ruleSetIndex, assign( {}, ruleSet, { enable: ! ( ruleSet.enable !== false ) } ) );
+															updateRuleSet( ruleSetIndex, Object.assign( {}, ruleSet, { enable: ! ( ruleSet.enable !== false ) } ) );
 														}
 													},
 														ruleSet.enable !== false
@@ -543,7 +537,7 @@ import ReactSelect from 'react-select';
 
 				group.fields.forEach( function( field ) {
 					if ( field.type === 'date_picker' || field.type === 'date_time_picker' ) {
-						const fieldWithGroup = assign( {}, field, {
+						const fieldWithGroup = Object.assign( {}, field, {
 							groupTitle: group.title,
 							groupKey: group.key
 						} );

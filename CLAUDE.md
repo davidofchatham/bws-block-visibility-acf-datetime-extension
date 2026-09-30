@@ -23,7 +23,7 @@ Test on the local wp-litespeed testbed (https://testbed.test/); its plugin direc
 
 - Follow WordPress PHP coding standards; escape all output.
 - Use WordPress i18n functions with the plugin text domain.
-- JavaScript uses classic WordPress patterns: `wp.element.createElement`, no JSX, and `lodash.assign` for merging.
+- JavaScript imports from `@wordpress/*` packages (not `wp.*` globals), uses `createElement` with no JSX, and `Object.assign` for merging.
 - Match Block Visibility's native UI patterns exactly (menu structure, icon shapes) and integrate only through its documented filters.
 - Committed files contain no absolute local paths and no personal email addresses.
 
