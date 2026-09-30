@@ -1,8 +1,8 @@
 === Block Visibility ACF Date-Time Extension by BWS ===
 Contributors: bridgewebsolutions, davidofchatham
 Tags: block visibility, acf, advanced custom fields, block editor, gutenberg
-Requires at least: 6.5
-Tested up to: 6.7
+Requires at least: 6.6
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 0.8.0
 License: GPLv2 or later
@@ -41,10 +41,11 @@ Block Visibility ACF Date-Time Extension adds powerful date and datetime compari
 
 = Requirements =
 
-* WordPress 6.5 or higher
+* WordPress 6.6 or higher
 * Block Visibility 3.0.0 or higher
 * Advanced Custom Fields (free or PRO)
 * At least one ACF Date Picker or Date Time Picker field
+* Block Visibility's ACF integration enabled (Block Visibility > Settings > Visibility Controls); otherwise the control lists no fields
 
 = About This Plugin =
 

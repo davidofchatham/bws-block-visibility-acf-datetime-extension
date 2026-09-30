@@ -5,7 +5,7 @@
  * Description: Adds a control for conditions based on ACF date/datetime fields to Block Visibility
  * Version: 0.8.0
  * Requires PHP: 7.4
- * Requires at least: 6.5
+ * Requires at least: 6.6
  * Author: Bridge Web Solutions
  * Author URI: https://bridgewebsolutions.com
  * License: GPL-2.0-or-later

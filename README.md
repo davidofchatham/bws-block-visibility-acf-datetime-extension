@@ -18,11 +18,12 @@ Extends [Block Visibility](https://www.blockvisibilitywp.com/) with controls for
 
 ## Requirements
 
-- WordPress 6.5+
+- WordPress 6.6+
 - PHP 7.4+
 - [Block Visibility](https://wordpress.org/plugins/block-visibility/) 3.0.0+
 - [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/) (Free or PRO)
 - At least one ACF Date Picker or Date Time Picker field
+- Block Visibility's ACF integration enabled (Block Visibility > Settings > Visibility Controls); otherwise the control lists no fields
 
 ## Installation
 
