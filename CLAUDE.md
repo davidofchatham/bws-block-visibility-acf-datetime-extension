@@ -17,6 +17,7 @@ Test on the local wp-litespeed testbed (https://testbed.test/); its plugin direc
 
 - `npm run build`: compile `assets/js/editor-control.js` to `build/` (run after any JS change).
 - `npm run package`: build, create the zip, add the version to its filename.
+- `tests/visibility-check.php`: visibility-logic check. From the wp-litespeed checkout in WSL: `bin/wp.sh testbed eval-file /var/www/vhosts/testbed/html/wp-content/plugins/bws-block-visibility-acf-datetime-extension/tests/visibility-check.php` (details in `docs/testing.md`).
 
 ### Conventions
 
