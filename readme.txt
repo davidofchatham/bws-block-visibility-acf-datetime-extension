@@ -4,7 +4,7 @@ Tags: block visibility, acf, advanced custom fields, block editor, gutenberg
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,15 +79,15 @@ The display format in your ACF field settings doesn't matter - only the storage 
 
 = Can I compare against a custom date instead of the current date? =
 
-Not in version 1.0.0. Currently, all comparisons are made against the current date/time. Custom date comparisons may be added in a future release.
+Not currently. All comparisons are made against the current date/time. Custom date comparisons may be added in a future release.
 
 = Does this support ACF date range fields? =
 
-Not currently. Only standard Date Picker and Date Time Picker fields are supported in version 1.0.0.
+Not currently. Only standard Date Picker and Date Time Picker fields are supported.
 
 = What timezone is used for comparisons? =
 
-The plugin uses Block Visibility's `create_date_time()` utility, which respects your WordPress timezone settings.
+Comparisons use your WordPress timezone setting (Settings > General).
 
 = Can I use multiple date field conditions? =
 
@@ -102,23 +102,12 @@ Yes! You can create multiple rule sets with AND/OR logic, just like other Block 
 
 == Changelog ==
 
-= 0.8.0 =
-* Added: Duplicate button in rule set hamburger menu
-* Improved: Hamburger menu now matches Block Visibility patterns exactly
-* Added: "Clear rule set" option for single rule sets (vs "Remove rule set" for multiple)
-* Fixed: Disabled rule sets now properly ignored in visibility evaluation
-* Improved: Delete Rule button uses Block Visibility-style close icon (X)
-
-= 0.7.0 =
-* Initial feature-complete beta release
-* Support for ACF Date Picker and Date Time Picker fields
-* Four comparison operators: before, beforeOrOn, after, onOrAfter
-* Support for post fields, user fields, and options page fields
-* Rule sets with AND/OR logic
-* Grouped field listings matching Block Visibility's UI
-* Field type display for selected fields
+The full changelog is in [CHANGELOG.md](https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/blob/master/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 0.9.0 =
+Fixes logged-out user rules and empty-value handling, and adds automatic updates from GitHub. Requires WordPress 6.6+.
 
 = 0.8.0 =
 Adds Duplicate button to rule sets and ensures control appears in Block Visibility's global settings.

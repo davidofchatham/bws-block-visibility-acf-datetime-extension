@@ -69,7 +69,7 @@ Load-bearing parts also migrate out of the spec:
 |---|---|
 | Load-bearing invariants | PHPDoc on the enforcing code, or a `docs/architecture.md` section |
 | The decision and its rationale | the `docs/architecture.md` section that owns the invariant, with a **Rejected** note where it was a real fork |
-| The user-facing delta | the changelog in `README.md` and `readme.txt` |
+| The user-facing delta | `CHANGELOG.md` |
 | Why this change, now | the commit body |
 
 Rules that bind a lift:

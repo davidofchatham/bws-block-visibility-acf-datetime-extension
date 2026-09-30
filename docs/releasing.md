@@ -2,10 +2,9 @@
 
 ## Version bump
 
-Update the version in **all** of these, and keep the changelogs matching:
+Update the version in **all** of these, and move the `[Unreleased]` entries in `CHANGELOG.md` under the new version heading with its date (and update the link references at the bottom):
 
-- `readme.txt`: Stable tag and changelog (WordPress.org format)
-- `README.md`: version badge and changelog (GitHub format)
+- `readme.txt`: Stable tag and Upgrade Notice
 - `package.json`: the `version` field
 - `bws-block-visibility-acf-datetime-extension.php`: the `Version` header
 

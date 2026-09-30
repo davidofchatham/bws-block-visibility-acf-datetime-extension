@@ -15,6 +15,7 @@ Extends [Block Visibility](https://www.blockvisibilitywp.com/) with controls for
 - **Grouped Field Listings**: ACF fields organized by Field Group for easy selection
 - **Field Type Display**: Shows whether a field is Date Picker or Date Time Picker
 - **Default Visibility Controls**: Available in Block Visibility's global settings
+- **Automatic Updates**: New versions arrive from GitHub releases
 
 ## Requirements
 
@@ -78,82 +79,11 @@ The block will now automatically show or hide based on whether the ACF field val
 
 ## Development
 
-### Build Commands
-
 - `npm run build` - Production build
 - `npm run start` - Development mode with watch
 - `npm run package` - Create distributable zip file
 
-### File Structure
-
-```
-bws-block-visibility-acf-datetime-extension/
-├── assets/
-│   └── js/
-│       └── editor-control.js          # Editor UI component (source)
-├── build/
-│   ├── editor-control.js              # Compiled editor script
-│   └── editor-control.asset.php       # Asset dependencies
-├── includes/
-│   ├── class-acf-date-time-control.php     # Main control class
-│   ├── settings-integration.php            # Settings registration
-│   └── frontend/
-│       └── visibility-test.php             # Frontend visibility logic
-├── bws-block-visibility-acf-datetime-extension.php  # Main plugin file
-├── package.json
-├── README.md
-└── readme.txt
-```
-
-### Architecture
-
-This plugin integrates with Block Visibility using its filter-based extension system:
-
-1. **Settings Registration** (`includes/settings-integration.php`):
-   - Registers `acf_date_time` control in Block Visibility settings
-   - Uses `block_visibility_settings` and `block_visibility_settings_defaults` filters
-
-2. **Editor Control** (`assets/js/editor-control.js`):
-   - Registers control metadata via `blockVisibility.controls` filter
-   - Adds UI component via `blockVisibility.addControlSetControls` filter
-   - Filters ACF fields to show only date/datetime types
-   - Provides field selection with grouped listings
-
-3. **Frontend Visibility Test** (`includes/frontend/visibility-test.php`):
-   - Hooks into `block_visibility_control_set_is_block_visible` filter
-   - Evaluates ACF field values against current date/time
-   - Supports AND/OR logic for rule sets
-
-### Date Handling
-
-**ACF Date Picker** (`date_picker`):
-- Storage format: `Ymd` (e.g., `20240115`)
-- Compared at midnight (00:00:00) for date-only comparisons
-
-**ACF Date Time Picker** (`date_time_picker`):
-- Storage format: `Y-m-d H:i:s` (e.g., `2024-01-15 14:30:00`)
-- Full datetime comparison
-
-**Timezone**: Uses Block Visibility's `create_date_time()` utility for timezone consistency with WordPress settings.
-
-### UI Implementation Toggle
-
-The editor control supports two UI implementations:
-
-**React-Select** (default - matches Block Visibility exactly):
-- Bundle size: ~90KB
-- Exact visual match to Block Visibility
-
-**WordPress SelectControl** (fallback):
-- Bundle size: ~5.5KB
-- Standard WordPress admin styling
-
-Toggle in `assets/js/editor-control.js`:
-```javascript
-const USE_REACT_SELECT = true; // Change to false for WordPress SelectControl
-```
-
-After changing, rebuild with `npm run build`.
+How the plugin works is in [docs/architecture.md](docs/architecture.md), testing in [docs/testing.md](docs/testing.md), and the release process in [docs/releasing.md](docs/releasing.md).
 
 ## Comparison Operators
 
@@ -163,14 +93,6 @@ After changing, rebuild with `npm run build`.
 | `beforeOrOn` | Field date is before or equal to current date/time |
 | `after` | Field date is after current date/time |
 | `onOrAfter` | Field date is equal to or after current date/time |
-
-## Field Contexts
-
-| Context | Description | ACF Function |
-|---------|-------------|--------------|
-| Current Post | Field value from the current post | `get_field_object($field)` |
-| Current User | Field value from the current user | `get_field_object($field, 'user_' . $user_id)` |
-| Options Page | Field value from ACF options page | `get_field_object($field, 'option')` |
 
 ## Troubleshooting
 
@@ -192,18 +114,7 @@ After changing, rebuild with `npm run build`.
 
 ### Debugging
 
-Enable WordPress debugging in `wp-config.php`:
-```php
-define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_LOG', true );
-define( 'WP_DEBUG_DISPLAY', false );
-```
-
-Add temporary logging in `includes/frontend/visibility-test.php`:
-```php
-error_log( 'ACF DateTime test called' );
-error_log( 'Controls: ' . print_r( $controls, true ) );
-```
+Enable `WP_DEBUG` and `WP_DEBUG_LOG` in `wp-config.php` and check `wp-content/debug.log`. To confirm the frontend filter runs, see [Debug logging](docs/testing.md#debug-logging).
 
 ## Credits
 
@@ -225,18 +136,4 @@ For issues, questions, or contributions, please use the [GitHub issue tracker](h
 
 ## Changelog
 
-### 0.8.0
-- Added: Duplicate button in rule set hamburger menu
-- Improved: Hamburger menu now matches Block Visibility patterns exactly
-- Added: "Clear rule set" option for single rule sets (vs "Remove rule set" for multiple)
-- Fixed: Disabled rule sets now properly ignored in visibility evaluation
-- Improved: Delete Rule button uses Block Visibility-style close icon (X)
-
-### 0.7.0
-- Initial release
-- Support for ACF Date Picker and Date Time Picker fields
-- Four comparison operators: before, beforeOrOn, after, onOrAfter
-- Support for post fields, user fields, and options page fields
-- Rule sets with AND/OR logic
-- Grouped field listings matching Block Visibility's UI
-- Field type display for selected fields
+See [CHANGELOG.md](CHANGELOG.md).
