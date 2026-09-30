@@ -105,6 +105,15 @@ A rule that cannot be evaluated is neutral: it is skipped and pushes no result. 
 - **Date Time Picker (`date_time_picker`):** stored as `Y-m-d H:i:s` (`2024-01-15 14:30:00`); compared with full datetime.
 - **Timezone:** `wp_timezone()`, so field values and the current time compare in the site's timezone.
 
+## Plugin updates
+
+An installed copy updates itself from GitHub releases through [plugin-update-checker](https://github.com/YahnisElsts/plugin-update-checker) 5.7, so live sites need a manual install only once.
+
+- **Vendored in `libs/plugin-update-checker/`:** unmodified 5.7 copy, no Composer. `package.json` `files` includes `libs/` in the zip; `wp-scripts plugin-zip` would otherwise leave it out.
+- **Wired before the dependency returns:** the main plugin file builds the checker right after the `ABSPATH` guard, ahead of the Block Visibility and ACF checks, so updates still arrive when a dependency is missing or too old.
+- **Release assets:** `enableReleaseAssets()` with a regex matches `bws-block-visibility-acf-datetime-extension-<version>.zip`, the zip attached to each GitHub release, instead of the branch tip or the auto-generated source archive (whose folder name carries the tag). No token; the repo is public.
+- **Slug:** must equal the installed plugin folder name.
+
 ## References
 
 - [Block Visibility documentation](https://www.blockvisibilitywp.com/knowledge-base/)

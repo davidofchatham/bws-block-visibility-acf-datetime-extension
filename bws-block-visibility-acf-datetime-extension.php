@@ -17,6 +17,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Self-update from GitHub releases. Runs before the dependency checks so
+// updates still arrive when Block Visibility or ACF is missing.
+require_once __DIR__ . '/libs/plugin-update-checker/load-v5p7.php';
+$bws_acf_datetime_update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+	'https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/',
+	__FILE__,
+	'bws-block-visibility-acf-datetime-extension'
+);
+// Use the release-attached versioned zip, not the branch tip.
+$bws_acf_datetime_update_checker->getVcsApi()->enableReleaseAssets( '/bws-block-visibility-acf-datetime-extension-[\d.]+\.zip/' );
+
 // Check Block Visibility version.
 if ( ! defined( 'BLOCK_VISIBILITY_VERSION' ) ||
 	 version_compare( BLOCK_VISIBILITY_VERSION, '3.0.0', '<' ) ) {

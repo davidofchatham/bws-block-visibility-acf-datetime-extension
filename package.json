@@ -4,6 +4,15 @@
   "description": "Block Visibility ACF Date/Datetime Control Extension by BWS",
   "author": "Bridge Web Solutions",
   "license": "GPL-2.0-or-later",
+  "files": [
+    "build/",
+    "includes/",
+    "libs/",
+    "bws-block-visibility-acf-datetime-extension.php",
+    "uninstall.php",
+    "readme.txt",
+    "LICENSE"
+  ],
   "scripts": {
 	"build": "wp-scripts build assets/js/editor-control.js --output-path=build",
 	"start": "wp-scripts start assets/js/editor-control.js --output-path=build",
