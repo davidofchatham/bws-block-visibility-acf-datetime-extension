@@ -3,6 +3,9 @@ node_modules/
 
 # Distribution files
 dist/
+
+# Compiled editor script; CI builds it for releases (npm run build locally)
+build/
 *.zip
 
 # OS files
