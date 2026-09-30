@@ -62,12 +62,13 @@ function bws_check( $label, $expected, $rule_sets, $hide_on = false ) {
  *
  * @param string $field    Field name.
  * @param string $operator Comparison operator.
+ * @param string $context  Field context: 'post'|'user'|'option'.
  * @return array Rule.
  */
-function bws_rule( $field, $operator ) {
+function bws_rule( $field, $operator, $context = 'post' ) {
 	return array(
 		'field'    => $field,
-		'subField' => 'post',
+		'subField' => $context,
 		'operator' => $operator,
 	);
 }
@@ -149,6 +150,12 @@ try {
 	WP_CLI::log( 'OR across rule sets' );
 	bws_check( 'one set passes -> visible', true, array( bws_set( $fail ), bws_set( $pass ) ) );
 	bws_check( 'no set passes -> hidden', false, array( bws_set( $fail ), bws_set( $fail ) ) );
+
+	WP_CLI::log( 'Logged-out user, user-context rule' );
+	wp_set_current_user( 0 );
+	$user_rule = bws_rule( 'bws_test_past', 'after', 'user' );
+	bws_check( 'user rule -> hidden', false, array( bws_set( $user_rule ) ) );
+	bws_check( 'user rule inverted -> visible', true, array( bws_set( $user_rule ) ), true );
 
 	WP_CLI::log( 'Hide mode' );
 	bws_check( 'passing set inverted -> hidden', false, array( bws_set( $pass ) ), true );

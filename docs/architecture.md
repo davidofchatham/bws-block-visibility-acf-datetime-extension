@@ -92,7 +92,7 @@ Settings schema: `visibility_controls.acf_date_time.enable` (boolean).
 `subField` selects where the value comes from:
 
 - `'post'`, current post: `get_field_object( $field )`. Any other value, including the legacy `'true'`, also falls through to the current post.
-- `'user'`, current user: `get_field_object( $field, 'user_' . $user_id )`. Returns null when nobody is logged in.
+- `'user'`, current user: `get_field_object( $field, 'user_' . $user_id )`. When nobody is logged in the rule is hidden (inverted in hide mode), matching Block Visibility.
 - `'option'`, options page: `get_field_object( $field, 'option' )`
 
 ### Date parsing

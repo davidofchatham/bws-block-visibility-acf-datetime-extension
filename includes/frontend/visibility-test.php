@@ -116,6 +116,13 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 				continue;
 			}
 
+			// Matches Block Visibility: a user-context rule fails when nobody is logged in.
+			if ( 'user' === $sub_field && ! $current_user_id ) {
+				debug_log( '      Result: hidden (user context, not logged in)' );
+				$rule_set_test_results[] = 'hidden';
+				continue;
+			}
+
 			// Get ACF field object with value.
 			$acf_field = get_acf_field_by_context( $field, $sub_field, $current_user_id );
 
@@ -190,15 +197,12 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
  *
  * @param string $field           ACF field key.
  * @param string $sub_field       Context: 'post'|'user'|'option' (legacy: 'true' for post).
- * @param int    $current_user_id Current user ID.
+ * @param int    $current_user_id Current user ID. Callers must handle the logged-out case for 'user' context.
  * @return array|null ACF field object.
  */
 function get_acf_field_by_context( $field, $sub_field, $current_user_id ) {
 	// Determine post_id based on context.
 	if ( 'user' === $sub_field ) {
-		if ( ! $current_user_id ) {
-			return null;
-		}
 		$post_id = 'user_' . $current_user_id;
 	} elseif ( 'option' === $sub_field ) {
 		$post_id = 'option';
