@@ -19,6 +19,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Serena MCP server state (project config + memories). Machine-local tooling.
+/.serena/
+
 # Claude working files
 .claude/
-CLAUDE.md
