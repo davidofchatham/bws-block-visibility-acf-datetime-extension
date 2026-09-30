@@ -21,11 +21,10 @@ if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 	WP_CLI::error( 'ACF is not active.' );
 }
 
-// The plugin loads this on the 'wp' hook, which never fires under wp-cli.
-if ( ! function_exists( 'BlockVisibility\Utils\is_control_enabled' ) ) {
-	require_once BLOCK_VISIBILITY_ABSPATH . 'includes/utils/is-control-enabled.php';
+// Like REST requests, wp-cli never fires the 'wp' hook, so the test must load without it.
+if ( ! function_exists( 'BWS\ACFDateTime\acf_datetime_test' ) ) {
+	WP_CLI::error( 'Frontend test not loaded on a request without the wp hook.' );
 }
-require_once BWS_ACF_DATETIME_PATH . 'includes/frontend/visibility-test.php';
 
 $GLOBALS['bws_failures'] = 0;
 $GLOBALS['bws_checks']   = 0;

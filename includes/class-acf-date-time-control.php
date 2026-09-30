@@ -28,20 +28,10 @@ class BWS_ACF_DateTime_Control {
 	private function includes() {
 		require_once BWS_ACF_DATETIME_PATH . 'includes/settings-integration.php';
 
-		// Only load frontend visibility test on frontend.
+		// Load on every non-admin request, REST included; see docs/architecture.md.
 		if ( ! is_admin() ) {
-			// Load after Block Visibility's render-block.php has loaded utilities.
-			add_action( 'wp', array( $this, 'load_frontend_test' ), 5 );
+			require_once BWS_ACF_DATETIME_PATH . 'includes/frontend/visibility-test.php';
 		}
-	}
-
-	/**
-	 * Load frontend visibility test file.
-	 *
-	 * Loaded at 'wp' hook to ensure Block Visibility utilities are available.
-	 */
-	public function load_frontend_test() {
-		require_once BWS_ACF_DATETIME_PATH . 'includes/frontend/visibility-test.php';
 	}
 
 	/**

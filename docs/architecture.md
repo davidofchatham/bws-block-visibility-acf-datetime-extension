@@ -20,7 +20,9 @@ bws-block-visibility-acf-datetime-extension/
 - **Main plugin file:** checks dependencies (BV 3.0+, ACF), defines constants, initializes at priority 20 so it runs after BV at priority 10.
 - **Control class:** enqueues the editor script and provides the operators `before`, `beforeOrOn`, `after`, `onOrAfter`.
 - **Settings integration:** registers `acf_date_time` through the `block_visibility_settings` and `block_visibility_settings_defaults` filters, default enabled.
-- **Frontend test:** namespace `BWS\ACFDateTime`, hooked to `block_visibility_control_set_is_block_visible` at priority 15.
+- **Frontend test:** namespace `BWS\ACFDateTime`, hooked to `block_visibility_control_set_is_block_visible` at priority 15. The control class requires it directly in its non-admin branch, so it is loaded on REST requests too, where BV also filters `render_block`. BV utilities come in through `use function`, which resolves at call time, so load order against BV does not matter.
+
+**Rejected: deferring the frontend test to the `wp` hook.** Earlier versions did this so BV utilities were loaded first. `wp` never fires on REST requests, so blocks rendered through REST (for example `content.rendered`) ignored their rules.
 
 ## Block Visibility integration
 
