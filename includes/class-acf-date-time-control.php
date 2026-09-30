@@ -77,9 +77,8 @@ class BWS_ACF_DateTime_Control {
 			'bws-block-visibility-acf-datetime-extension-editor',
 			'bwsAcfDateTimeConfig',
 			array(
-				'controlSlug'      => 'acfDateTime',
-				'operators'        => $this->get_operators(),
-				'hasPortalSystem'  => function_exists( 'bws_portal' ),
+				'controlSlug' => 'acfDateTime',
+				'operators'   => $this->get_operators(),
 			)
 		);
 	}

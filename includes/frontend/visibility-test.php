@@ -186,45 +186,10 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 }
 
 /**
- * Get the current portal's post ID.
- *
- * @return int|false Portal post ID or false if not available.
- */
-function get_portal_post_id() {
-	// Check if portal system is available.
-	if ( ! function_exists( 'bws_portal' ) ) {
-		return false;
-	}
-
-	// Get current portal ID.
-	$portal_id = bws_portal()->detector()->get_current_id();
-
-	if ( empty( $portal_id ) ) {
-		return false;
-	}
-
-	// Get portal maps (portal_id -> post_id mapping).
-	$maps = bws_portal()->portal_maps()->get_maps();
-	$post_id = $maps['portal_map'][ $portal_id ] ?? null;
-
-	if ( ! $post_id ) {
-		return false;
-	}
-
-	// Verify post exists and is published.
-	$post = get_post( $post_id );
-	if ( ! $post || 'publish' !== $post->post_status ) {
-		return false;
-	}
-
-	return (int) $post->ID;
-}
-
-/**
  * Get ACF field object based on context.
  *
  * @param string $field           ACF field key.
- * @param string $sub_field       Context: 'post'|'user'|'option'|'portal' (legacy: 'true' for post).
+ * @param string $sub_field       Context: 'post'|'user'|'option' (legacy: 'true' for post).
  * @param int    $current_user_id Current user ID.
  * @return array|null ACF field object.
  */
@@ -237,14 +202,6 @@ function get_acf_field_by_context( $field, $sub_field, $current_user_id ) {
 		$post_id = 'user_' . $current_user_id;
 	} elseif ( 'option' === $sub_field ) {
 		$post_id = 'option';
-	} elseif ( 'portal' === $sub_field ) {
-		// Portal context.
-		$post_id = get_portal_post_id();
-
-		if ( ! $post_id ) {
-			// No valid portal context, return null.
-			return null;
-		}
 	} else {
 		// Default: current post context (when subField is 'post', 'true', or any other value).
 		$post_id = false; // false means current post in ACF.

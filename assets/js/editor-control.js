@@ -520,24 +520,11 @@ import ReactSelect from 'react-select';
 	 * @return {Array} Options array for SelectControl.
 	 */
 	function getSubFieldOptions() {
-		const options = [
-			{ label: __( 'The current post', 'bws-block-visibility-acf-datetime-extension' ), value: 'post' }
-		];
-
-		// Add portal option as second option if portal system is available.
-		if ( window.bwsAcfDateTimeConfig?.hasPortalSystem ) {
-			options.push(
-				{ label: __( 'The current portal', 'bws-block-visibility-acf-datetime-extension' ), value: 'portal' }
-			);
-		}
-
-		// Add remaining options.
-		options.push(
+		return [
+			{ label: __( 'The current post', 'bws-block-visibility-acf-datetime-extension' ), value: 'post' },
 			{ label: __( 'The current user', 'bws-block-visibility-acf-datetime-extension' ), value: 'user' },
 			{ label: __( 'An options page', 'bws-block-visibility-acf-datetime-extension' ), value: 'option' }
-		);
-
-		return options;
+		];
 	}
 
 	/**
