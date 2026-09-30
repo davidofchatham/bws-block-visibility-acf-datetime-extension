@@ -87,6 +87,8 @@ Settings schema: `visibility_controls.acf_date_time.enable` (boolean).
 3. Combine rule set results with **OR**.
 4. Return visible when there are no enabled rule sets (empty results).
 
+A rule that cannot be evaluated is neutral: it is skipped and pushes no result. That covers a missing field or operator, a field that is not found, an empty value, an unparseable date, an unknown operator, and an unsupported field type. A rule set whose rules are all skipped is skipped too, so hide-mode inversion never applies to it and an empty date no longer hides the block. When every set is skipped, step 4 returns visible.
+
 ### Field context
 
 `subField` selects where the value comes from:

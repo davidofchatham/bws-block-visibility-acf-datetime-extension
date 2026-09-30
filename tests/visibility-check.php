@@ -105,6 +105,16 @@ try {
 					'name' => 'bws_test_future',
 					'type' => 'date_picker',
 				),
+				array(
+					'key'  => 'field_bws_test_empty',
+					'name' => 'bws_test_empty',
+					'type' => 'date_picker',
+				),
+				array(
+					'key'  => 'field_bws_test_bad',
+					'name' => 'bws_test_bad',
+					'type' => 'date_picker',
+				),
 			),
 			'location' => array(
 				array(
@@ -131,12 +141,17 @@ try {
 
 	update_field( 'field_bws_test_past', '20000101', $post_id );
 	update_field( 'field_bws_test_future', '20990101', $post_id );
+	update_field( 'field_bws_test_bad', 'not-a-date', $post_id );
 
 	// ACF reads the current post when no post ID is given.
 	$GLOBALS['post'] = get_post( $post_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
-	// A missing or empty field reads as visible, so prove the fixture values are readable first.
-	if ( '20000101' !== get_field( 'bws_test_past', false, false ) || '20990101' !== get_field( 'bws_test_future', false, false ) ) {
+	// A missing or empty field is skipped, so prove the fixture values are readable first.
+	if (
+		'20000101' !== get_field( 'bws_test_past', false, false )
+		|| '20990101' !== get_field( 'bws_test_future', false, false )
+		|| 'not-a-date' !== get_field( 'bws_test_bad', false, false )
+	) {
 		WP_CLI::error( 'Fixture fields are not readable; the checks below would be meaningless.' );
 	}
 
@@ -160,6 +175,25 @@ try {
 	WP_CLI::log( 'Hide mode' );
 	bws_check( 'passing set inverted -> hidden', false, array( bws_set( $pass ) ), true );
 	bws_check( 'failing set inverted -> visible', true, array( bws_set( $fail ) ), true );
+
+	// Rules that cannot be evaluated are skipped, and a set with no evaluated rules is skipped.
+	$neutral_rules = array(
+		'empty value'      => bws_rule( 'bws_test_empty', 'after' ),
+		'unparseable date' => bws_rule( 'bws_test_bad', 'after' ),
+		'missing field'    => bws_rule( '', 'after' ),
+		'missing operator' => bws_rule( 'bws_test_past', '' ),
+		'unknown operator' => bws_rule( 'bws_test_past', 'bogus' ),
+		'field not found'  => bws_rule( 'bws_test_nonexistent', 'after' ),
+	);
+	foreach ( $neutral_rules as $name => $neutral ) {
+		WP_CLI::log( "Neutral: $name" );
+		bws_check( 'alone -> visible', true, array( bws_set( $neutral ) ) );
+		bws_check( 'alone in hide mode -> visible', true, array( bws_set( $neutral ) ), true );
+		bws_check( 'skipped set does not count as passing -> hidden', false, array( bws_set( $neutral ), bws_set( $fail ) ) );
+		bws_check( 'skipped set is not inverted in hide mode -> visible', true, array( bws_set( $neutral ), bws_set( $fail ) ), true );
+		bws_check( 'with a passing rule, only that rule counts -> visible', true, array( bws_set( $neutral, $pass ) ) );
+		bws_check( 'with a failing rule, only that rule counts -> hidden', false, array( bws_set( $neutral, $fail ) ) );
+	}
 } finally {
 	if ( $post_id ) {
 		wp_delete_post( $post_id, true );

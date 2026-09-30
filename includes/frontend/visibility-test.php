@@ -111,8 +111,7 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 			debug_log( '      Context: ' . $sub_field );
 
 			if ( ! $field || ! $operator ) {
-				debug_log( '      Result: visible (missing field or operator)' );
-				$rule_set_test_results[] = 'visible';
+				debug_log( '      Skipped (missing field or operator)' );
 				continue;
 			}
 
@@ -127,8 +126,7 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 			$acf_field = get_acf_field_by_context( $field, $sub_field, $current_user_id );
 
 			if ( ! $acf_field ) {
-				debug_log( '      Result: visible (ACF field not found)' );
-				$rule_set_test_results[] = 'visible';
+				debug_log( '      Skipped (ACF field not found)' );
 				continue;
 			}
 
@@ -136,8 +134,7 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 			debug_log( '      ACF field value: ' . $acf_field['value'] );
 
 			if ( empty( $acf_field['value'] ) ) {
-				debug_log( '      Result: visible (ACF field has no value)' );
-				$rule_set_test_results[] = 'visible';
+				debug_log( '      Skipped (ACF field has no value)' );
 				continue;
 			}
 
@@ -148,10 +145,21 @@ function acf_datetime_test( $is_visible, $settings, $controls ) {
 				$operator
 			);
 
+			if ( null === $passes ) {
+				debug_log( '      Skipped (value could not be compared)' );
+				continue;
+			}
+
 			debug_log( '      Comparison result: ' . ( $passes ? 'PASS' : 'FAIL' ) );
 			debug_log( '      Result: ' . ( $passes ? 'visible' : 'hidden' ) );
 
 			$rule_set_test_results[] = $passes ? 'visible' : 'hidden';
+		}
+
+		// A rule set with no evaluated rules is neutral: it pushes no result, so hide-mode inversion never applies.
+		if ( empty( $rule_set_test_results ) ) {
+			debug_log( '   Skipping rule set (no rules could be evaluated)' );
+			continue;
 		}
 
 		// AND logic within rule set.
@@ -234,7 +242,7 @@ function get_acf_field_by_context( $field, $sub_field, $current_user_id ) {
  * @param mixed  $field_value ACF field value.
  * @param string $field_type  ACF field type.
  * @param string $operator    Comparison operator.
- * @return boolean Whether comparison passes.
+ * @return boolean|null Whether comparison passes, or null when the value cannot be compared.
  */
 function compare_acf_datetime( $field_value, $field_type, $operator ) {
 	debug_log( '      [compare_acf_datetime] ENTER: value=' . $field_value . ', type=' . $field_type . ', op=' . $operator );
@@ -256,12 +264,12 @@ function compare_acf_datetime( $field_value, $field_type, $operator ) {
 			// ACF stores as Y-m-d H:i:s (e.g., 2024-01-15 14:30:00).
 			$field_datetime = \DateTime::createFromFormat( 'Y-m-d H:i:s', $field_value, $timezone );
 		} else {
-			return false;
+			return null;
 		}
 
 		if ( ! $field_datetime ) {
 			debug_log( '      [compare_acf_datetime] EXIT EARLY: field_datetime is null/false' );
-			return false;
+			return null;
 		}
 
 		// Get current date/time with same timezone.
@@ -297,12 +305,12 @@ function compare_acf_datetime( $field_value, $field_type, $operator ) {
 				return $current >= $field_datetime;
 
 			default:
-				return false;
+				return null;
 		}
 
 	} catch ( \Exception $e ) {
 		debug_log( '      [compare_acf_datetime] EXCEPTION: ' . $e->getMessage() );
 		debug_log( '      [compare_acf_datetime] Stack trace: ' . $e->getTraceAsString() );
-		return false;
+		return null;
 	}
 }
