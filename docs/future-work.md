@@ -37,9 +37,9 @@ Progress may state only what stays true forever once true ("agreed, not started"
 
 Correctness fixes found in an assessment against Block Visibility 3.8.1 (logged-out user rule, empty-value handling, REST-time test loading, JS dependency extraction), plus vendoring plugin-update-checker so later versions reach live sites automatically.
 
-Detail home: `.scratch/plans/v0.9.0-fixes-and-updater.md`
+Detail home: `.scratch/plans/v0.9.0-fixes-and-updater.md`, sliced into tickets under `.scratch/v0.9.0/issues/`
 
-Progress: Agreed, not started.
+Progress: Agreed and sliced into nine tickets; test harness (ticket 01) built.
 
 Blocked by: —  •  Interacts with: FW-2
 
