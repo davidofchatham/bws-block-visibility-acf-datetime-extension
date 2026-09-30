@@ -39,7 +39,7 @@ Correctness fixes found in an assessment against Block Visibility 3.8.1 (logged-
 
 Detail home: `.scratch/plans/v0.9.0-fixes-and-updater.md`, sliced into tickets under `.scratch/v0.9.0/issues/`
 
-Progress: Agreed and sliced into nine tickets; test harness (ticket 01), logged-out user-rule fix (ticket 02), neutral empty/unparseable values (ticket 03) and REST-time test loading (ticket 04) and `@wordpress/*` imports for the editor JS (ticket 05) built.
+Progress: Agreed and sliced into nine tickets; test harness (ticket 01), logged-out user-rule fix (ticket 02), neutral empty/unparseable values (ticket 03) and REST-time test loading (ticket 04) `@wordpress/*` imports for the editor JS (ticket 05) and version headers with ACF-integration readme note (ticket 06) built.
 
 Blocked by: —  •  Interacts with: FW-2
 
