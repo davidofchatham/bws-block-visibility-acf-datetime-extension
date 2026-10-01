@@ -14,11 +14,12 @@ bws-block-visibility-acf-datetime-extension/
 │   ├── settings-integration.php         # Registers the control in BV's settings schema
 │   └── frontend/visibility-test.php     # Frontend visibility evaluation
 ├── assets/js/editor-control.js          # Editor UI (source)
-└── build/                               # Compiled editor script + asset manifest
+├── assets/js/settings-panel.js          # BV settings-page panel (source)
+└── build/                               # Compiled editor + settings scripts and asset manifests
 ```
 
 - **Main plugin file:** checks dependencies (BV 3.0+, ACF), defines constants, initializes at priority 20 so it runs after BV at priority 10.
-- **Control class:** enqueues the editor script and provides the operators `before`, `beforeOrOn`, `after`, `onOrAfter`.
+- **Control class:** enqueues the editor script (and the settings-panel script on BV's settings screen) and provides the operators `before`, `beforeOrOn`, `after`, `onOrAfter`.
 - **Settings integration:** registers `acf_date_time` through the `block_visibility_settings` and `block_visibility_settings_defaults` filters, default enabled.
 - **Frontend test:** namespace `BWS\ACFDateTime`, hooked to `block_visibility_control_set_is_block_visible` at priority 15. The control class requires it directly in its non-admin branch, so it is loaded on REST requests too, where BV also filters `render_block`. BV utilities come in through `use function`, which resolves at call time, so load order against BV does not matter.
 
@@ -28,23 +29,26 @@ bws-block-visibility-acf-datetime-extension/
 
 The plugin uses only BV's documented filters; nothing patches BV.
 
-- **Editor metadata:** the `blockVisibility.controls` filter pushes `{ label, attributeSlug: 'acfDateTime', settingSlug: 'acf_date_time' }`.
+- **Editor metadata:** the `blockVisibility.controls` filter pushes `{ label: 'Advanced Custom Fields Date/Time', type: 'integration', icon, attributeSlug: 'acfDateTime', settingSlug: 'acf_date_time' }`. `type: 'integration'` makes BV list the control under "Integrations" in the editor menu; `icon` (`calendar` from `@wordpress/icons`) is rendered next to it. BV's settings page builds its "Default visibility controls" list from the same filter, so the registration lives in `assets/js/register-control.js`, imported by both the editor and settings scripts.
+- **Integration active flag:** BV drops any integration control unless `variables.integrations[ settingSlug ].active` is truthy, so PHP filters `block_visibility_rest_variables` to set `integrations.acf_date_time.active` to `function_exists( 'acf' )`. Both halves are required: without the flag the control vanishes from the editor menu and from the settings page's default controls list.
 - **Editor UI:** the `blockVisibility.addControlSetControls` filter adds the component.
 - **Settings schema:** PHP registers `acf_date_time` under `visibility_controls`. The schema key must match the JS `settingSlug` exactly, or the control disappears from BV's settings.
+- **Settings panel:** `assets/js/settings-panel.js` adds an "Advanced Custom Fields Date/Time" panel with an enable toggle (`visibility_controls.acf_date_time.enable`, default on) to Settings → Block Visibility → Visibility Controls → Integrations, modeled on BV's own ACF panel. The `Slot` BV renders there (`VisibilityControlsIntegrations`) passes no props to fills, so the script wraps the `blockVisibility.VisibilityControls` component via `addFilter`, which does receive `variables`, `visibilityControls` and `setVisibilityControls`, and renders the panel in a `Fill` from there. The panel renders only while `variables.integrations.acf_date_time.active` is true, the same flag as above. Turning the toggle off makes BV's `getEnabledControls` drop the control from the editor menu, and the frontend test already honors it. The control class enqueues the script from `admin_enqueue_scripts` only when `$_GET['page']` is `block-visibility-settings`, the same check BV uses for its own settings assets. `npm run build` compiles both scripts.
 - **Frontend:** the test callback must check `is_control_enabled()` before evaluating.
-- **Default Visibility Controls:** the control shows up in BV's "Default Visibility Controls" list automatically because `settingSlug` matches the PHP schema. Administrators can enable or disable it globally there.
+- **Default Visibility Controls:** the control shows up in BV's "Default Visibility Controls" list automatically because `settingSlug` matches the PHP schema. That list picks which controls new blocks start with; the global on/off switch is the settings panel above.
 - **REST:** the editor reads ACF fields from BV's `/wp-json/block-visibility/v1/variables` (`variables.integrations.acf`) and filters to `date_picker` and `date_time_picker`.
 - **BV utility used:** `is_control_enabled()`.
 
-**Rejected: positioning the control under "Integrations" via `category: 'integrations'`.** v0.8.0 tried it, plus a `settingSlug` prefixed with `integrations`, plus different filter priorities. None moved the control, and the prefixed slug broke the settings integration. The control lands in "General". The real mechanism is different (BV splits its menu on `type: 'integration'` and requires an active flag in its REST variables); that work is tracked as FW-2.
+**Rejected: positioning the control under "Integrations" via `category: 'integrations'`.** v0.8.0 tried it, plus a `settingSlug` prefixed with `integrations`, plus different filter priorities. None moved the control, and the prefixed slug broke the settings integration. BV splits its menu on `type: 'integration'`, not `category`. Solved in 1.0.0 by `type: 'integration'` plus the integration active flag, both described above; keep the plain `acf_date_time` slug.
 
 ## Editor control
 
-- `@wordpress/*` imports (hooks, i18n, element, components, primitives) instead of `wp.*` globals; `wp-scripts` dependency extraction turns them into `wp-*` script handles in `build/editor-control.asset.php`, so WordPress loads them before the control. `createElement` with no JSX, `Object.assign` for merging. Icons are custom SVG elements built from `@wordpress/primitives`, defined at the top of the file.
-- **Field selector:** fields are grouped by ACF Field Group with the group name as the section heading, matching BV's native ACF control. Only date and datetime fields are shown. After selection, the field type appears below the selector ("Field type: Date Picker") using BV's `.control-fields-item__help` styling.
-- **UI implementation flag:** `USE_REACT_SELECT` in `assets/js/editor-control.js` picks the select implementation. `true` uses `react-select` with `.block-visibility__react-select` classes and matches BV exactly (~90KB bundle). `false` uses WordPress `SelectControl` (~5.5KB, standard admin styling). Production ships `true`. Rebuild after changing it.
-
-**Rejected: `closeSmall` from `wp.icons` for the delete-rule button.** It does not exist there and the button rendered blank. The button uses a custom SVG with BV's exact path data. Do not assume `wp.icons` has an icon; verify or draw one.
+- `@wordpress/*` imports (hooks, i18n, element, components, primitives) instead of `wp.*` globals; `wp-scripts` dependency extraction turns them into `wp-*` script handles in `build/editor-control.asset.php`, so WordPress loads them before the control. `createElement` with no JSX, `Object.assign` for merging. Icons come from `@wordpress/icons`, which `wp-scripts` bundles (there is no `wp-icons` handle); only BV's select chevron, which that package lacks, is drawn from `@wordpress/primitives`.
+- **Styling:** the plugin ships no CSS. BV's editor stylesheet is always loaded, so the control reproduces the markup and class names of BV's own components (`controls/acf/index.js`, `components/rule-sets/`, `components/information-popover/`) and inherits their styles. BV does not export those components, so `InformationPopover` and the react-select indicator are small copies. Match BV's markup when changing the UI; do not add CSS.
+- **Editor notices:** the header info popover and the description follow BV's `enable_editor_notices` plugin setting, as BV's controls do.
+- **Field selector:** `react-select` (bundled, ~90KB) with BV's `.block-visibility__react-select` classes. Fields are grouped by ACF Field Group with the group name as the section heading, matching BV's native ACF control. Only date and datetime fields are shown. After selection, the field type appears below the selector ("Field type: Date Picker") using BV's `.control-fields-item__help` styling.
+- **Operator before field:** deliberate deviation from BV's ACF control (field first), so the rule reads as a sentence: "Show the block if current date and time is *On or before* *[field]*".
+- **Rule set title:** the pencil menu stores an optional `title` on the rule set, as BV does. The frontend ignores it.
 
 ## Rule sets
 

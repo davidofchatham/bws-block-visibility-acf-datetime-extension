@@ -4,7 +4,7 @@ Tags: block visibility, acf, advanced custom fields, block editor, gutenberg
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.9.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,9 @@ Yes! You can create multiple rule sets with AND/OR logic, just like other Block 
 The full changelog is in [CHANGELOG.md](https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/blob/master/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 1.0.0 =
+The control now lists under Integrations in Block Visibility's editor menu as "Advanced Custom Fields Date/Time" and has a site-wide enable toggle in Block Visibility's settings. Existing blocks keep their settings.
 
 = 0.9.0 =
 Fixes logged-out user rules and empty-value handling, and adds automatic updates from GitHub. Requires WordPress 6.6+.

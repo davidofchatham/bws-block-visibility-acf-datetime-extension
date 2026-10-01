@@ -39,6 +39,34 @@ class BWS_ACF_DateTime_Control {
 	 */
 	private function init_hooks() {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_settings_assets' ) );
+	}
+
+	/**
+	 * Enqueue the settings panel script on Block Visibility's settings screen only.
+	 */
+	public function enqueue_settings_assets() {
+		// Same page check as Block Visibility's own settings assets.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! isset( $_GET['page'] ) || 'block-visibility-settings' !== $_GET['page'] ) {
+			return;
+		}
+
+		$asset_file = BWS_ACF_DATETIME_PATH . 'build/settings-panel.asset.php';
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$asset_data = include $asset_file;
+
+		wp_enqueue_script(
+			'bws-block-visibility-acf-datetime-extension-settings',
+			BWS_ACF_DATETIME_URL . 'build/settings-panel.js',
+			$asset_data['dependencies'],
+			$asset_data['version'],
+			true
+		);
 	}
 
 	/**

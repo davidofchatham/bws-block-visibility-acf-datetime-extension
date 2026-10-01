@@ -1,6 +1,6 @@
 {
   "name": "bws-block-visibility-acf-datetime-extension",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Block Visibility ACF Date/Datetime Control Extension by BWS",
   "author": "Bridge Web Solutions",
   "license": "GPL-2.0-or-later",
@@ -14,14 +14,15 @@
     "LICENSE"
   ],
   "scripts": {
-	"build": "wp-scripts build assets/js/editor-control.js --output-path=build",
-	"start": "wp-scripts start assets/js/editor-control.js --output-path=build",
+	"build": "wp-scripts build assets/js/editor-control.js assets/js/settings-panel.js --output-path=build",
+	"start": "wp-scripts start assets/js/editor-control.js assets/js/settings-panel.js --output-path=build",
 	"package": "npm run build && wp-scripts plugin-zip && node rename-zip.js"
   },
   "dependencies": {
+	"@wordpress/icons": "^16.0.0",
 	"react-select": "^5.8.0"
   },
   "devDependencies": {
-	"@wordpress/scripts": "^31.3.0"
+	"@wordpress/scripts": "^35.0.0"
   }
 }

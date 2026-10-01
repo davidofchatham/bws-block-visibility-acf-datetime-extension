@@ -114,6 +114,21 @@ try {
 					'name' => 'bws_test_bad',
 					'type' => 'date_picker',
 				),
+				array(
+					'key'  => 'field_bws_test_today',
+					'name' => 'bws_test_today',
+					'type' => 'date_picker',
+				),
+				array(
+					'key'  => 'field_bws_test_dt_past',
+					'name' => 'bws_test_dt_past',
+					'type' => 'date_time_picker',
+				),
+				array(
+					'key'  => 'field_bws_test_dt_future',
+					'name' => 'bws_test_dt_future',
+					'type' => 'date_time_picker',
+				),
 			),
 			'location' => array(
 				array(
@@ -142,6 +157,15 @@ try {
 	update_field( 'field_bws_test_future', '20990101', $post_id );
 	update_field( 'field_bws_test_bad', 'not-a-date', $post_id );
 
+	// Relative to now in the site timezone, as the frontend test compares. An hour either side
+	// usually falls on the same day, which date-only granularity could not tell apart.
+	$today     = wp_date( 'Ymd' );
+	$dt_past   = wp_date( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS );
+	$dt_future = wp_date( 'Y-m-d H:i:s', time() + HOUR_IN_SECONDS );
+	update_field( 'field_bws_test_today', $today, $post_id );
+	update_field( 'field_bws_test_dt_past', $dt_past, $post_id );
+	update_field( 'field_bws_test_dt_future', $dt_future, $post_id );
+
 	// ACF reads the current post when no post ID is given.
 	$GLOBALS['post'] = get_post( $post_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
@@ -150,12 +174,32 @@ try {
 		'20000101' !== get_field( 'bws_test_past', false, false )
 		|| '20990101' !== get_field( 'bws_test_future', false, false )
 		|| 'not-a-date' !== get_field( 'bws_test_bad', false, false )
+		|| $today !== get_field( 'bws_test_today', false, false )
+		|| $dt_past !== get_field( 'bws_test_dt_past', false, false )
+		|| $dt_future !== get_field( 'bws_test_dt_future', false, false )
 	) {
 		WP_CLI::error( 'Fixture fields are not readable; the checks below would be meaningless.' );
 	}
 
 	$pass = bws_rule( 'bws_test_past', 'after' );    // Past date, so current is after: passes.
 	$fail = bws_rule( 'bws_test_future', 'after' );  // Future date, so current is not after: fails.
+
+	// Expected result per operator, in the order before, beforeOrOn, onOrAfter, after.
+	$operator_cases = array(
+		'past date'        => array( 'bws_test_past', false, false, true, true ),
+		'today (date)'     => array( 'bws_test_today', false, true, true, false ),
+		'future date'      => array( 'bws_test_future', true, true, false, false ),
+		'datetime -1 hour' => array( 'bws_test_dt_past', false, false, true, true ),
+		'datetime +1 hour' => array( 'bws_test_dt_future', true, true, false, false ),
+	);
+	foreach ( $operator_cases as $name => $case ) {
+		WP_CLI::log( "Operators: $name" );
+		$field = array_shift( $case );
+		foreach ( array( 'before', 'beforeOrOn', 'onOrAfter', 'after' ) as $i => $operator ) {
+			$expected = $case[ $i ];
+			bws_check( "$operator -> " . ( $expected ? 'visible' : 'hidden' ), $expected, array( bws_set( bws_rule( $field, $operator ) ) ) );
+		}
+	}
 
 	WP_CLI::log( 'AND within a rule set' );
 	bws_check( 'all rules pass -> visible', true, array( bws_set( $pass, $pass ) ) );
@@ -192,6 +236,16 @@ try {
 		bws_check( 'skipped set is not inverted in hide mode -> visible', true, array( bws_set( $neutral ), bws_set( $fail ) ), true );
 		bws_check( 'with a passing rule, only that rule counts -> visible', true, array( bws_set( $neutral, $pass ) ) );
 		bws_check( 'with a failing rule, only that rule counts -> hidden', false, array( bws_set( $neutral, $fail ) ) );
+	}
+
+	WP_CLI::log( 'Block Visibility integration flag' );
+	$variables = apply_filters( 'block_visibility_rest_variables', array( 'integrations' => array() ), 'full' );
+	++$GLOBALS['bws_checks'];
+	if ( true === ( $variables['integrations']['acf_date_time']['active'] ?? null ) ) {
+		WP_CLI::log( '  ok    integration marked active when ACF is present' );
+	} else {
+		++$GLOBALS['bws_failures'];
+		WP_CLI::log( '  FAIL  integration not marked active when ACF is present' );
 	}
 } finally {
 	if ( $post_id ) {
