@@ -4,11 +4,9 @@ The visible index over all non-bug work. This is **not a roadmap**: nothing here
 
 ## Index
 
-- FW-3: Custom comparison date
-- FW-4: Relative date comparisons
-- FW-5: ACF date range fields
-- FW-6: Time-only comparisons for datetime fields
-- FW-7: Field-to-field comparison
+- [Feature ideas](#feature-ideas): new comparisons and field types.
+- [Architecture](#architecture): refactors that deepen modules without changing behavior.
+- [Closed / retired](#closed--retired): shipped or withdrawn items.
 
 ## Item shape
 
@@ -39,7 +37,7 @@ Detail home: none yet.
 
 Progress: Not started.
 
-Blocked by: —  •  Interacts with: FW-4
+Blocked by: —  •  Interacts with: FW-4, FW-8
 
 #### FW-4 — Relative date comparisons
 
@@ -49,7 +47,7 @@ Detail home: none yet.
 
 Progress: Not started.
 
-Blocked by: —  •  Interacts with: FW-3
+Blocked by: —  •  Interacts with: FW-3, FW-8, FW-10
 
 #### FW-5 — ACF date range fields
 
@@ -59,7 +57,7 @@ Detail home: none yet.
 
 Progress: Not started.
 
-Blocked by: —  •  Interacts with: —
+Blocked by: —  •  Interacts with: FW-8, FW-10
 
 #### FW-6 — Time-only comparisons for datetime fields
 
@@ -69,7 +67,7 @@ Detail home: none yet.
 
 Progress: Not started.
 
-Blocked by: —  •  Interacts with: —
+Blocked by: —  •  Interacts with: FW-8, FW-10
 
 #### FW-7 — Field-to-field comparison
 
@@ -79,7 +77,49 @@ Detail home: none yet.
 
 Progress: Not started.
 
-Blocked by: —  •  Interacts with: FW-3
+Blocked by: —  •  Interacts with: FW-3, FW-8, FW-9
+
+### Architecture
+
+#### FW-8 — Deepen the date comparison module
+
+One module owns parsing per field type, date versus datetime granularity, and the operators, and receives the moment to compare against instead of reading the clock itself. Every date-semantics feature (FW-3 to FW-7) lands here, so it is best done alongside the first of them rather than on its own.
+
+Detail home: none yet.
+
+Progress: Not started. The visibility check covers every operator, today's date and datetime fields, so the current behavior is pinned before any refactor.
+
+Blocked by: —  •  Interacts with: FW-3, FW-4, FW-5, FW-6, FW-7, FW-10
+
+#### FW-9 — Rule-set evaluation behind a field-value seam
+
+Separate the visibility semantics in `acf_datetime_test()` (neutral rules, logged-out users, hide mode, AND within a set, OR across sets) from the ACF reads, behind a seam with two adapters: ACF in production, an in-memory table in tests. The semantics could then be tested without a live WordPress; the gain is speed and reach, since the current check already runs against real ACF.
+
+Detail home: none yet.
+
+Progress: Not started.
+
+Blocked by: —  •  Interacts with: FW-7
+
+#### FW-10 — One home for the control's vocabulary
+
+PHP owns the operators, the supported field types and the defaults, and hands them to the editor and settings scripts, so adding an operator or field type is one edit instead of three across two languages. Includes deleting the localized `controlSlug`, which no script reads.
+
+Detail home: none yet.
+
+Progress: Not started.
+
+Blocked by: —  •  Interacts with: FW-4, FW-5, FW-6, FW-8
+
+#### FW-11 — Rule-set editing out of the editor render
+
+Move the rule-set editing operations (add, remove, duplicate, clear, and their at-least-one invariants) out of the editor control's render into their own module, tested with the Jest runner `@wordpress/scripts` ships. Worth doing when a bug shows up there; until then it moves complexity more than it concentrates it.
+
+Detail home: none yet.
+
+Progress: Not started.
+
+Blocked by: —  •  Interacts with: —
 
 ## Closed / retired
 
