@@ -38,7 +38,7 @@ Make the control a first-class BV integration: listed under "Integrations" in th
 
 Detail home: `.scratch/plans/v1.0.0-integration.md`, tickets in `.scratch/v1.0.0/issues/`
 
-Progress: Agreed and sliced into build tickets; not started.
+Progress: Sliced into build tickets; ticket `v1.0.0/01` built (tooling upgrade).
 
 Blocked by: ship:0.9.0  •  Interacts with: FW-1 (closed)
 
