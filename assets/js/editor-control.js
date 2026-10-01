@@ -10,164 +10,104 @@
  * @license GPL-2.0-or-later
  */
 
-import ReactSelect from 'react-select';
+import ReactSelect, { components as selectComponents } from 'react-select';
 import { addFilter } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 import { createElement as el, Fragment } from '@wordpress/element';
-import { SelectControl, ToggleControl, Button, DropdownMenu, MenuGroup, MenuItem, Fill, Disabled } from '@wordpress/components';
+import { ToggleControl, TextControl, Button, DropdownMenu, MenuGroup, MenuItem, Fill, Disabled } from '@wordpress/components';
 import { SVG, Path } from '@wordpress/primitives';
+import { Icon, calendar, closeSmall, info, moreVertical, pencil, plus } from '@wordpress/icons';
 import './register-control';
 
 ( function() {
-	/**
-	 * Feature flag: Set to true to use react-select (Block Visibility style),
-	 * or false to use WordPress SelectControl (fallback).
-	 */
-	const USE_REACT_SELECT = true;
-
-	// Block Visibility icon definitions
-	const plusIcon = el( SVG, { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
-		el( Path, { d: 'M11 12.5V17.5H12.5V12.5H17.5V11H12.5V6H11V11H6V12.5H11Z' } )
-	);
-
-	const moreVerticalIcon = el( SVG, { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
-		el( Path, { d: 'M13 19h-2v-2h2v2zm0-6h-2v-2h2v2zm0-6h-2V5h2v2z' } )
-	);
-
-	const closeIcon = el( SVG, { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24' },
-		el( Path, { d: 'M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z' } )
+	// BV's chevron (block-visibility/src/utils/icons.js); not in @wordpress/icons.
+	const chevronDown = el( SVG, { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+		el( Path, { d: 'M16 10.8571L12 14L8 10.8571L8.65455 10L12 12.5714L15.2727 10L16 10.8571Z', fill: '#1e1e1e' } )
 	);
 
 	/**
-	 * Custom dropdown indicator for react-select matching Block Visibility style.
+	 * Dropdown indicator matching BV's react-select-utils.js.
 	 *
+	 * @param {Object} props react-select indicator props.
 	 * @return {Element} The dropdown indicator element.
 	 */
-	function CustomDropdownIndicator() {
-		return el( 'div', {
-				className: 'react-select__indicator react-select__dropdown-indicator',
-				'aria-hidden': 'true'
-			},
-			el( 'svg', {
-				width: '24',
-				height: '24',
-				viewBox: '0 0 24 24',
-				fill: 'none',
-				xmlns: 'http://www.w3.org/2000/svg',
-				'aria-hidden': 'true',
-				focusable: 'false'
-			},
-				el( 'path', {
-					d: 'M16 10.8571L12 14L8 10.8571L8.65455 10L12 12.5714L15.2727 10L16 10.8571Z',
-					fill: '#1e1e1e'
-				} )
-			)
-		);
+	function DropdownIndicator( props ) {
+		return el( selectComponents.DropdownIndicator, props, chevronDown );
 	}
 
 	/**
-	 * Render a select field using either react-select or WordPress SelectControl.
+	 * Render a react-select field with the same markup as BV's RuleField, so BV's editor styles apply.
 	 *
 	 * @param {Object} props Field properties.
 	 * @return {Element} The rendered field element.
 	 */
 	function renderSelectField( props ) {
 		const { label, value, options, onChange, placeholder, fieldId, className, help, hasGroupedOptions } = props;
+		const flatOptions = hasGroupedOptions
+			? options.reduce( function( all, group ) {
+				return all.concat( group.options || [] );
+			}, [] )
+			: options;
+		const selectedOption = flatOptions.find( function( opt ) {
+			return opt.value === value;
+		} ) || null;
 
-		if ( USE_REACT_SELECT ) {
-			let selectOptions;
-			let selectedOption = null;
-
-			if ( hasGroupedOptions ) {
-				// Options are already in grouped format: [{ label: 'Group', options: [...] }]
-				selectOptions = options;
-
-				// Find selected option within groups
-				options.forEach( function( group ) {
-					if ( group.options ) {
-						const found = group.options.find( function( opt ) {
-							return opt.value === value;
-						} );
-						if ( found ) {
-							selectedOption = found;
-						}
-					}
-				} );
-			} else {
-				// Convert flat options to react-select format
-				selectOptions = options.map( function( opt ) {
-					return { value: opt.value, label: opt.label };
-				} );
-
-				// Find selected option
-				selectedOption = selectOptions.find( function( opt ) {
-					return opt.value === value;
-				} ) || null;
-			}
-
-			// Custom styles matching Block Visibility
-			const customStyles = {
-				control: function( base ) {
-					return Object.assign( {}, base, {
-						minHeight: '40px',
-						borderColor: '#757575'
-					} );
-				}
-			};
-
-			// Custom components to match Block Visibility style
-			const customComponents = {
-				DropdownIndicator: CustomDropdownIndicator,
-				IndicatorSeparator: null // Remove separator
-			};
-
-			// Check if label should be visually hidden
-			const hasVisuallyHiddenLabel = className && className.indexOf( 'has-visually-hidden-label' ) !== -1;
-			const labelClassName = 'components-base-control__label' + ( hasVisuallyHiddenLabel ? ' screen-reader-text' : '' );
-
-			return el( 'div', { className: 'components-base-control' },
-				label && el( 'label', {
-					className: labelClassName,
-					htmlFor: fieldId,
-					id: fieldId + '_label'
-				}, label ),
-				el( 'div', { className: 'block-visibility__react-select ' + ( className || '' ) },
-					el( ReactSelect, {
-						id: fieldId,
-						inputId: fieldId + '_select',
-						'aria-labelledby': fieldId + '_label',
-						className: 'react-select-container',
-						classNamePrefix: 'react-select',
-						value: selectedOption,
-						options: selectOptions,
-						onChange: function( selectedOption ) {
-							onChange( selectedOption ? selectedOption.value : '' );
-						},
-						placeholder: placeholder || __( 'Select…', 'bws-block-visibility-acf-datetime-extension' ),
-						isClearable: false,
-						styles: customStyles,
-						components: customComponents
-					} )
-				),
-				help && el( 'div', { className: 'control-fields-item__help for-select-component' }, help )
-			);
-		} else {
-			// Fallback to WordPress SelectControl
-			return el( SelectControl, {
-				label: label,
-				value: value,
+		return el( Fragment, {},
+			label && el( 'label', {
+				id: fieldId + '_label',
+				htmlFor: fieldId + '_select',
+				className: 'field__label'
+			}, label ),
+			el( ReactSelect, {
+				'aria-labelledby': label ? fieldId + '_label' : undefined,
+				'aria-label': label ? undefined : props.ariaLabel,
+				inputId: fieldId + '_select',
+				components: { DropdownIndicator: DropdownIndicator, IndicatorSeparator: function() {
+					return null;
+				} },
+				className: 'block-visibility__react-select ' + className,
+				classNamePrefix: 'react-select',
+				value: selectedOption,
 				options: options,
-				onChange: onChange,
-				help: help
-			} );
-		}
+				placeholder: placeholder || __( 'Select…', 'bws-block-visibility-acf-datetime-extension' ),
+				onChange: function( option ) {
+					onChange( option ? option.value : '' );
+				}
+			} ),
+			help && el( 'div', { className: 'control-fields-item__help for-select-component' }, help )
+		);
+	}
+
+	/**
+	 * Info popover matching BV's InformationPopover component (not exported by BV).
+	 *
+	 * @param {string} message Popover text.
+	 * @return {Element} The popover element.
+	 */
+	function InformationPopover( message ) {
+		return el( 'div', { className: 'information-popover' },
+			el( DropdownMenu, {
+				label: __( 'More Information', 'bws-block-visibility-acf-datetime-extension' ),
+				icon: info,
+				toggleProps: { className: 'information-popover__button' },
+				popoverProps: {
+					className: 'information-popover__popover',
+					focusOnMount: 'container',
+					position: 'bottom right',
+					noArrow: false
+				}
+			}, function() {
+				return el( 'p', null, message );
+			} )
+		);
 	}
 
 	/**
 	 * ACF Date/Datetime Control Component.
 	 */
 	function AcfDateTimeControl( props ) {
-		const { enabledControls, controlSetAtts, setControlAtts, variables } = props;
+		const { enabledControls, controlSetAtts, setControlAtts, settings, variables } = props;
+		const enableNotices = settings?.plugin_settings?.enable_editor_notices ?? true;
 
 		const controlActive = enabledControls.some(
 			function( control ) {
@@ -292,18 +232,22 @@ import './register-control';
 		};
 
 		return el( 'div', { className: 'controls-panel-item acf-datetime-control' },
-			el( 'h3', { className: 'controls-panel-item__header' },
-				el( 'span', null, __( 'Advanced Custom Fields Date/Time', 'bws-block-visibility-acf-datetime-extension' ) ),
+			el( 'h3', { className: 'controls-panel-item__header has-icon' },
+				el( Icon, { icon: calendar } ),
+				el( 'span', null, __( 'ACF Date/Time', 'bws-block-visibility-acf-datetime-extension' ) ),
+				enableNotices && InformationPopover(
+					__( 'The Advanced Custom Fields Date/Time control shows or hides the block by comparing the current date and time with an ACF date or date/time field.', 'bws-block-visibility-acf-datetime-extension' )
+				),
 				el( 'div', { className: 'controls-panel-item__header-toolbar' },
 					el( Button, {
-						icon: plusIcon,
+						icon: plus,
 						onClick: addRuleSet,
 						label: __( 'Add rule set', 'bws-block-visibility-acf-datetime-extension' ),
 						size: 'small'
 					} )
 				)
 			),
-			el( 'div', { className: 'controls-panel-item__description' },
+			enableNotices && el( 'div', { className: 'controls-panel-item__description' },
 				sprintf(
 					// Translators: Whether the block is hidden or visible.
 					__( '%s the block if any rule set applies. Rules associated with users will fail if the current user is not logged in.', 'bws-block-visibility-acf-datetime-extension' ),
@@ -345,7 +289,7 @@ import './register-control';
 											el( 'span', null, ruleLabel ),
 											( ruleSet.rules || [] ).length > 1 && el( Button, {
 												label: __( 'Delete Rule', 'bws-block-visibility-acf-datetime-extension' ),
-												icon: closeIcon,
+												icon: closeSmall,
 												onClick: function() {
 													removeRule( ruleSetIndex, ruleIndex );
 												}
@@ -354,7 +298,7 @@ import './register-control';
 										el( 'div', { className: 'rule__fields' },
 											el( 'div', { className: 'fields-container' },
 												renderSelectField( {
-													label: __( 'Comparison operator', 'bws-block-visibility-acf-datetime-extension' ),
+													ariaLabel: __( 'Comparison operator', 'bws-block-visibility-acf-datetime-extension' ),
 													value: rule.operator || '',
 													options: window.bwsAcfDateTimeConfig?.operators || [],
 													onChange: function( operator ) {
@@ -362,7 +306,7 @@ import './register-control';
 													},
 													placeholder: __( 'Select…', 'bws-block-visibility-acf-datetime-extension' ),
 													fieldId: ruleSetIndex + '_' + ruleIndex + '_operator',
-													className: 'field__operator has-visually-hidden-label'
+													className: 'field__operatorField'
 												} ),
 												hasOperator && renderSelectField( {
 													label: __( 'Date/datetime field', 'bws-block-visibility-acf-datetime-extension' ),
@@ -409,16 +353,36 @@ import './register-control';
 							},
 							el( 'div', { className: 'rule-set__header section-header' },
 								el( 'div', { className: 'section-header__title' },
-									__( 'Rule Set', 'bws-block-visibility-acf-datetime-extension' ) +
-									( ruleSets.length > 1 ? ' ' + ( ruleSetIndex + 1 ) : '' )
+									el( 'span', null, ruleSet.title || __( 'Rule Set', 'bws-block-visibility-acf-datetime-extension' ) ),
+									el( DropdownMenu, {
+										label: __( 'Edit', 'bws-block-visibility-acf-datetime-extension' ),
+										icon: pencil,
+										popoverProps: {
+											className: 'block-visibility__control-popover edit-title',
+											focusOnMount: 'container',
+											placement: 'left-start',
+											offset: 94
+										}
+									}, function() {
+										return el( TextControl, {
+											value: ruleSet.title || '',
+											label: __( 'Rule set title', 'bws-block-visibility-acf-datetime-extension' ),
+											placeholder: __( 'Rule Set', 'bws-block-visibility-acf-datetime-extension' ),
+											onChange: function( title ) {
+												updateRuleSet( ruleSetIndex, Object.assign( {}, ruleSet, { title: title } ) );
+											}
+										} );
+									} )
 								),
 								el( 'div', { className: 'section-header__toolbar' },
 									el( DropdownMenu, {
-										icon: moreVerticalIcon,
+										className: 'options-dropdown',
+										icon: moreVertical,
 										label: __( 'Options', 'bws-block-visibility-acf-datetime-extension' ),
 										popoverProps: {
 											focusOnMount: 'container',
-											placement: 'left-start'
+											placement: 'left-start',
+											offset: 259
 										}
 									},
 										function( props ) {

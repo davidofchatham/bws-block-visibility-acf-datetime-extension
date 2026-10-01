@@ -43,11 +43,12 @@ The plugin uses only BV's documented filters; nothing patches BV.
 
 ## Editor control
 
-- `@wordpress/*` imports (hooks, i18n, element, components, primitives) instead of `wp.*` globals; `wp-scripts` dependency extraction turns them into `wp-*` script handles in `build/editor-control.asset.php`, so WordPress loads them before the control. `createElement` with no JSX, `Object.assign` for merging. Icons are custom SVG elements built from `@wordpress/primitives`, defined at the top of the file.
-- **Field selector:** fields are grouped by ACF Field Group with the group name as the section heading, matching BV's native ACF control. Only date and datetime fields are shown. After selection, the field type appears below the selector ("Field type: Date Picker") using BV's `.control-fields-item__help` styling.
-- **UI implementation flag:** `USE_REACT_SELECT` in `assets/js/editor-control.js` picks the select implementation. `true` uses `react-select` with `.block-visibility__react-select` classes and matches BV exactly (~90KB bundle). `false` uses WordPress `SelectControl` (~5.5KB, standard admin styling). Production ships `true`. Rebuild after changing it.
-
-**Rejected: `closeSmall` from `wp.icons` for the delete-rule button.** It does not exist there and the button rendered blank. The button uses a custom SVG with BV's exact path data. Do not assume `wp.icons` has an icon; verify or draw one.
+- `@wordpress/*` imports (hooks, i18n, element, components, primitives) instead of `wp.*` globals; `wp-scripts` dependency extraction turns them into `wp-*` script handles in `build/editor-control.asset.php`, so WordPress loads them before the control. `createElement` with no JSX, `Object.assign` for merging. Icons come from `@wordpress/icons`, which `wp-scripts` bundles (there is no `wp-icons` handle); only BV's select chevron, which that package lacks, is drawn from `@wordpress/primitives`.
+- **Styling:** the plugin ships no CSS. BV's editor stylesheet is always loaded, so the control reproduces the markup and class names of BV's own components (`controls/acf/index.js`, `components/rule-sets/`, `components/information-popover/`) and inherits their styles. BV does not export those components, so `InformationPopover` and the react-select indicator are small copies. Match BV's markup when changing the UI; do not add CSS.
+- **Editor notices:** the header info popover and the description follow BV's `enable_editor_notices` plugin setting, as BV's controls do.
+- **Field selector:** `react-select` (bundled, ~90KB) with BV's `.block-visibility__react-select` classes. Fields are grouped by ACF Field Group with the group name as the section heading, matching BV's native ACF control. Only date and datetime fields are shown. After selection, the field type appears below the selector ("Field type: Date Picker") using BV's `.control-fields-item__help` styling.
+- **Operator before field:** deliberate deviation from BV's ACF control (field first), so the rule reads as a sentence: "Show the block if current date and time is *On or before* *[field]*".
+- **Rule set title:** the pencil menu stores an optional `title` on the rule set, as BV does. The frontend ignores it.
 
 ## Rule sets
 

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Editor control matches Block Visibility's own controls: calendar icon, info popover and "ACF Date/Time" title in the panel header, editable rule set titles, and BV's select markup and dropdown arrows
+- Header info popover and description follow Block Visibility's "Enable editor notices" setting
+
 ## [0.9.0] - 2026-09-30
 
 ### Added
