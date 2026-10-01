@@ -39,3 +39,19 @@ function bws_register_acf_datetime_defaults( $defaults ) {
 	);
 	return $defaults;
 }
+
+/**
+ * Mark the control's integration active so Block Visibility lists it under Integrations.
+ *
+ * Block Visibility drops integration controls whose integration is not active.
+ *
+ * @param array $variables Block Visibility REST variables.
+ * @return array Modified variables.
+ */
+add_filter( 'block_visibility_rest_variables', 'bws_register_acf_datetime_integration' );
+function bws_register_acf_datetime_integration( $variables ) {
+	$variables['integrations']['acf_date_time'] = array(
+		'active' => function_exists( 'acf' ),
+	);
+	return $variables;
+}

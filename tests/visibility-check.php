@@ -193,6 +193,16 @@ try {
 		bws_check( 'with a passing rule, only that rule counts -> visible', true, array( bws_set( $neutral, $pass ) ) );
 		bws_check( 'with a failing rule, only that rule counts -> hidden', false, array( bws_set( $neutral, $fail ) ) );
 	}
+
+	WP_CLI::log( 'Block Visibility integration flag' );
+	$variables = apply_filters( 'block_visibility_rest_variables', array( 'integrations' => array() ), 'full' );
+	++$GLOBALS['bws_checks'];
+	if ( true === ( $variables['integrations']['acf_date_time']['active'] ?? null ) ) {
+		WP_CLI::log( '  ok    integration marked active when ACF is present' );
+	} else {
+		++$GLOBALS['bws_failures'];
+		WP_CLI::log( '  FAIL  integration not marked active when ACF is present' );
+	}
 } finally {
 	if ( $post_id ) {
 		wp_delete_post( $post_id, true );

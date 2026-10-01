@@ -28,7 +28,8 @@ bws-block-visibility-acf-datetime-extension/
 
 The plugin uses only BV's documented filters; nothing patches BV.
 
-- **Editor metadata:** the `blockVisibility.controls` filter pushes `{ label, attributeSlug: 'acfDateTime', settingSlug: 'acf_date_time' }`.
+- **Editor metadata:** the `blockVisibility.controls` filter pushes `{ label: 'ACF Date & Time', type: 'integration', icon, attributeSlug: 'acfDateTime', settingSlug: 'acf_date_time' }`. `type: 'integration'` makes BV list the control under "Integrations" in the editor menu; `icon` (`calendar` from `@wordpress/icons`) is rendered next to it.
+- **Integration active flag:** BV drops any integration control unless `variables.integrations[ settingSlug ].active` is truthy, so PHP filters `block_visibility_rest_variables` to set `integrations.acf_date_time.active` to `function_exists( 'acf' )`. Both halves are required: without the flag the control vanishes from the editor menu and from the settings page's default controls list.
 - **Editor UI:** the `blockVisibility.addControlSetControls` filter adds the component.
 - **Settings schema:** PHP registers `acf_date_time` under `visibility_controls`. The schema key must match the JS `settingSlug` exactly, or the control disappears from BV's settings.
 - **Frontend:** the test callback must check `is_control_enabled()` before evaluating.
@@ -36,7 +37,7 @@ The plugin uses only BV's documented filters; nothing patches BV.
 - **REST:** the editor reads ACF fields from BV's `/wp-json/block-visibility/v1/variables` (`variables.integrations.acf`) and filters to `date_picker` and `date_time_picker`.
 - **BV utility used:** `is_control_enabled()`.
 
-**Rejected: positioning the control under "Integrations" via `category: 'integrations'`.** v0.8.0 tried it, plus a `settingSlug` prefixed with `integrations`, plus different filter priorities. None moved the control, and the prefixed slug broke the settings integration. The control lands in "General". The real mechanism is different (BV splits its menu on `type: 'integration'` and requires an active flag in its REST variables); that work is tracked as FW-2.
+**Rejected: positioning the control under "Integrations" via `category: 'integrations'`.** v0.8.0 tried it, plus a `settingSlug` prefixed with `integrations`, plus different filter priorities. None moved the control, and the prefixed slug broke the settings integration. BV splits its menu on `type: 'integration'`, not `category`; see the integration active flag above.
 
 ## Editor control
 

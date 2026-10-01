@@ -19,6 +19,7 @@
 	"package": "npm run build && wp-scripts plugin-zip && node rename-zip.js"
   },
   "dependencies": {
+	"@wordpress/icons": "^16.0.0",
 	"react-select": "^5.8.0"
   },
   "devDependencies": {
