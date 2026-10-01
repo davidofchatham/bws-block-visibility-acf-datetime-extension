@@ -6,8 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.0]
+
+### Added
+
+- Global enable toggle for the control under Settings → Block Visibility → Visibility Controls → Integrations
+
 ### Changed
 
+- The control is listed under Integrations in Block Visibility's editor menu, labeled "Advanced Custom Fields Date/Time" with a calendar icon, and stays in the Default visibility controls list; existing blocks keep their settings
+- Build tooling upgraded to `@wordpress/scripts` 35 and Node 22, matching Block Visibility 3.8
 - Editor control matches Block Visibility's own controls: calendar icon, info popover and "ACF Date/Time" title in the panel header, editable rule set titles, and BV's select markup and dropdown arrows
 - Header info popover and description follow Block Visibility's "Enable editor notices" setting
 
@@ -62,7 +70,8 @@ Initial feature-complete beta release.
 - Grouped field listings matching Block Visibility's UI
 - Field type display for selected fields
 
-[Unreleased]: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/davidofchatham/bws-block-visibility-acf-datetime-extension/releases/tag/v0.7.0

@@ -4,7 +4,6 @@ The visible index over all non-bug work. This is **not a roadmap**: nothing here
 
 ## Index
 
-- FW-2: v1.0.0 Block Visibility integration
 - FW-3: Custom comparison date
 - FW-4: Relative date comparisons
 - FW-5: ACF date range fields
@@ -29,18 +28,6 @@ An item is startable when `Blocked by:` is `—` or every `row:`/`ship:`/`code:`
 Progress may state only what stays true forever once true ("agreed, not started", "half shipped in 0.9.0"). It never says "phase 2 of 3" or a percent. It is a few sentences, not a build log.
 
 ## Trackers
-
-### Releases
-
-#### FW-2 — v1.0.0 Block Visibility integration
-
-Make the control a first-class BV integration: listed under "Integrations" in the editor menu, "Advanced Custom Fields Date/Time" label and icon, a global enable toggle in BV's settings screen, and a tooling upgrade. Release as 1.0.0 if it works cleanly.
-
-Detail home: `.scratch/plans/v1.0.0-integration.md`, tickets in `.scratch/v1.0.0/issues/`
-
-Progress: Sliced into build tickets; tickets `v1.0.0/01` (tooling upgrade) and `v1.0.0/02` (Integrations menu label and icon) and `v1.0.0/03` (settings enable toggle) built.
-
-Blocked by: ship:0.9.0  •  Interacts with: FW-1 (closed)
 
 ### Feature ideas
 
@@ -99,6 +86,7 @@ Blocked by: —  •  Interacts with: FW-3
 | ID | Item | Outcome | Landed / detail home |
 |---|---|---|---|
 | FW-1 | v0.9.0 fixes and plugin-update-checker | Fixed the logged-out user rule, empty-value handling, REST-time test loading and JS dependency extraction, and added self-update from GitHub releases through plugin-update-checker. | 0.9.0 |
+| FW-2 | v1.0.0 Block Visibility integration | Made the control a first-class BV integration: listed under Integrations in the editor menu as "Advanced Custom Fields Date/Time" with a calendar icon, a global enable toggle on BV's settings page, and a tooling upgrade to `@wordpress/scripts` 35 and Node 22. | 1.0.0; `docs/design-history/v1.0.0-integration.md` |
 
 ## Maintenance
 

@@ -39,7 +39,7 @@ The plugin uses only BV's documented filters; nothing patches BV.
 - **REST:** the editor reads ACF fields from BV's `/wp-json/block-visibility/v1/variables` (`variables.integrations.acf`) and filters to `date_picker` and `date_time_picker`.
 - **BV utility used:** `is_control_enabled()`.
 
-**Rejected: positioning the control under "Integrations" via `category: 'integrations'`.** v0.8.0 tried it, plus a `settingSlug` prefixed with `integrations`, plus different filter priorities. None moved the control, and the prefixed slug broke the settings integration. BV splits its menu on `type: 'integration'`, not `category`; see the integration active flag above.
+**Rejected: positioning the control under "Integrations" via `category: 'integrations'`.** v0.8.0 tried it, plus a `settingSlug` prefixed with `integrations`, plus different filter priorities. None moved the control, and the prefixed slug broke the settings integration. BV splits its menu on `type: 'integration'`, not `category`. Solved in 1.0.0 by `type: 'integration'` plus the integration active flag, both described above; keep the plain `acf_date_time` slug.
 
 ## Editor control
 
