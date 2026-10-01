@@ -1,5 +1,5 @@
 /**
- * ACF Date & Time Control - Block Visibility settings panel
+ * Advanced Custom Fields Date/Time Control - Block Visibility settings panel
  *
  * Adds a global enable toggle to Settings → Block Visibility → Visibility Controls → Integrations.
  * The panel fills BV's `VisibilityControlsIntegrations` slot; the `blockVisibility.VisibilityControls`
@@ -17,6 +17,7 @@ import { __ } from '@wordpress/i18n';
 import { createElement as el, Fragment } from '@wordpress/element';
 import { ToggleControl, Fill } from '@wordpress/components';
 import { Icon, calendar } from '@wordpress/icons';
+import './register-control';
 
 ( function() {
 	/**
@@ -39,13 +40,13 @@ import { Icon, calendar } from '@wordpress/icons';
 			el( 'div', { className: 'settings-panel__header' },
 				el( 'span', { className: 'settings-panel__header-title' },
 					el( Icon, { icon: calendar } ),
-					__( 'ACF Date & Time', 'bws-block-visibility-acf-datetime-extension' )
+					__( 'Advanced Custom Fields Date/Time', 'bws-block-visibility-acf-datetime-extension' )
 				)
 			),
 			el( 'div', { className: 'settings-panel__container' },
 				el( 'div', { className: 'settings-type__toggle' },
 					el( ToggleControl, {
-						label: __( 'Enable the ACF Date & Time control.', 'bws-block-visibility-acf-datetime-extension' ),
+						label: __( 'Enable the Advanced Custom Fields Date/Time control.', 'bws-block-visibility-acf-datetime-extension' ),
 						checked: enable,
 						onChange: function() {
 							setVisibilityControls( Object.assign( {}, visibilityControls, {

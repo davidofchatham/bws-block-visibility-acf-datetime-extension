@@ -34,7 +34,7 @@ Progress may state only what stays true forever once true ("agreed, not started"
 
 #### FW-2 — v1.0.0 Block Visibility integration
 
-Make the control a first-class BV integration: listed under "Integrations" in the editor menu, "ACF Date & Time" label and icon, a global enable toggle in BV's settings screen, and a tooling upgrade. Release as 1.0.0 if it works cleanly.
+Make the control a first-class BV integration: listed under "Integrations" in the editor menu, "Advanced Custom Fields Date/Time" label and icon, a global enable toggle in BV's settings screen, and a tooling upgrade. Release as 1.0.0 if it works cleanly.
 
 Detail home: `.scratch/plans/v1.0.0-integration.md`, tickets in `.scratch/v1.0.0/issues/`
 

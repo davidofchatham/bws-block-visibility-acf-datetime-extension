@@ -16,7 +16,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { createElement as el, Fragment } from '@wordpress/element';
 import { SelectControl, ToggleControl, Button, DropdownMenu, MenuGroup, MenuItem, Fill, Disabled } from '@wordpress/components';
 import { SVG, Path } from '@wordpress/primitives';
-import { calendar } from '@wordpress/icons';
+import './register-control';
 
 ( function() {
 	/**
@@ -164,24 +164,6 @@ import { calendar } from '@wordpress/icons';
 	}
 
 	/**
-	 * Register control metadata.
-	 */
-	addFilter(
-		'blockVisibility.controls',
-		'bws/acf-datetime-control',
-		function( controls ) {
-			controls.push( {
-				label: __( 'ACF Date & Time', 'bws-block-visibility-acf-datetime-extension' ),
-				type: 'integration',
-				icon: calendar,
-				attributeSlug: 'acfDateTime',
-				settingSlug: 'acf_date_time',
-			} );
-			return controls;
-		}
-	);
-
-	/**
 	 * ACF Date/Datetime Control Component.
 	 */
 	function AcfDateTimeControl( props ) {
@@ -311,7 +293,7 @@ import { calendar } from '@wordpress/icons';
 
 		return el( 'div', { className: 'controls-panel-item acf-datetime-control' },
 			el( 'h3', { className: 'controls-panel-item__header' },
-				el( 'span', null, __( 'ACF Date & Time', 'bws-block-visibility-acf-datetime-extension' ) ),
+				el( 'span', null, __( 'Advanced Custom Fields Date/Time', 'bws-block-visibility-acf-datetime-extension' ) ),
 				el( 'div', { className: 'controls-panel-item__header-toolbar' },
 					el( Button, {
 						icon: plusIcon,
