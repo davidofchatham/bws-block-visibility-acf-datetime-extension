@@ -14,11 +14,12 @@ bws-block-visibility-acf-datetime-extension/
 │   ├── settings-integration.php         # Registers the control in BV's settings schema
 │   └── frontend/visibility-test.php     # Frontend visibility evaluation
 ├── assets/js/editor-control.js          # Editor UI (source)
-└── build/                               # Compiled editor script + asset manifest
+├── assets/js/settings-panel.js          # BV settings-page panel (source)
+└── build/                               # Compiled editor + settings scripts and asset manifests
 ```
 
 - **Main plugin file:** checks dependencies (BV 3.0+, ACF), defines constants, initializes at priority 20 so it runs after BV at priority 10.
-- **Control class:** enqueues the editor script and provides the operators `before`, `beforeOrOn`, `after`, `onOrAfter`.
+- **Control class:** enqueues the editor script (and the settings-panel script on BV's settings screen) and provides the operators `before`, `beforeOrOn`, `after`, `onOrAfter`.
 - **Settings integration:** registers `acf_date_time` through the `block_visibility_settings` and `block_visibility_settings_defaults` filters, default enabled.
 - **Frontend test:** namespace `BWS\ACFDateTime`, hooked to `block_visibility_control_set_is_block_visible` at priority 15. The control class requires it directly in its non-admin branch, so it is loaded on REST requests too, where BV also filters `render_block`. BV utilities come in through `use function`, which resolves at call time, so load order against BV does not matter.
 
@@ -32,8 +33,9 @@ The plugin uses only BV's documented filters; nothing patches BV.
 - **Integration active flag:** BV drops any integration control unless `variables.integrations[ settingSlug ].active` is truthy, so PHP filters `block_visibility_rest_variables` to set `integrations.acf_date_time.active` to `function_exists( 'acf' )`. Both halves are required: without the flag the control vanishes from the editor menu and from the settings page's default controls list.
 - **Editor UI:** the `blockVisibility.addControlSetControls` filter adds the component.
 - **Settings schema:** PHP registers `acf_date_time` under `visibility_controls`. The schema key must match the JS `settingSlug` exactly, or the control disappears from BV's settings.
+- **Settings panel:** `assets/js/settings-panel.js` adds an "ACF Date & Time" panel with an enable toggle (`visibility_controls.acf_date_time.enable`, default on) to Settings → Block Visibility → Visibility Controls → Integrations, modeled on BV's own ACF panel. The `Slot` BV renders there (`VisibilityControlsIntegrations`) passes no props to fills, so the script wraps the `blockVisibility.VisibilityControls` component via `addFilter`, which does receive `variables`, `visibilityControls` and `setVisibilityControls`, and renders the panel in a `Fill` from there. The panel renders only while `variables.integrations.acf_date_time.active` is true, the same flag as above. Turning the toggle off makes BV's `getEnabledControls` drop the control from the editor menu, and the frontend test already honors it. The control class enqueues the script from `admin_enqueue_scripts` only when `$_GET['page']` is `block-visibility-settings`, the same check BV uses for its own settings assets. `npm run build` compiles both scripts.
 - **Frontend:** the test callback must check `is_control_enabled()` before evaluating.
-- **Default Visibility Controls:** the control shows up in BV's "Default Visibility Controls" list automatically because `settingSlug` matches the PHP schema. Administrators can enable or disable it globally there.
+- **Default Visibility Controls:** the control shows up in BV's "Default Visibility Controls" list automatically because `settingSlug` matches the PHP schema. That list picks which controls new blocks start with; the global on/off switch is the settings panel above.
 - **REST:** the editor reads ACF fields from BV's `/wp-json/block-visibility/v1/variables` (`variables.integrations.acf`) and filters to `date_picker` and `date_time_picker`.
 - **BV utility used:** `is_control_enabled()`.
 

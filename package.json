@@ -14,8 +14,8 @@
     "LICENSE"
   ],
   "scripts": {
-	"build": "wp-scripts build assets/js/editor-control.js --output-path=build",
-	"start": "wp-scripts start assets/js/editor-control.js --output-path=build",
+	"build": "wp-scripts build assets/js/editor-control.js assets/js/settings-panel.js --output-path=build",
+	"start": "wp-scripts start assets/js/editor-control.js assets/js/settings-panel.js --output-path=build",
 	"package": "npm run build && wp-scripts plugin-zip && node rename-zip.js"
   },
   "dependencies": {

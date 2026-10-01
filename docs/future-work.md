@@ -38,7 +38,7 @@ Make the control a first-class BV integration: listed under "Integrations" in th
 
 Detail home: `.scratch/plans/v1.0.0-integration.md`, tickets in `.scratch/v1.0.0/issues/`
 
-Progress: Sliced into build tickets; tickets `v1.0.0/01` (tooling upgrade) and `v1.0.0/02` (Integrations menu label and icon) built.
+Progress: Sliced into build tickets; tickets `v1.0.0/01` (tooling upgrade) and `v1.0.0/02` (Integrations menu label and icon) and `v1.0.0/03` (settings enable toggle) built.
 
 Blocked by: ship:0.9.0  •  Interacts with: FW-1 (closed)
 
